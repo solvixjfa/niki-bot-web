@@ -1,12 +1,20 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const isSidebarOpen = ref(false)
+
+// Mengunci scroll di background saat menu HP terbuka
+watch(isSidebarOpen, (isOpen) => {
+  if (isOpen) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = 'auto'
+  }
+})
 
 const navLinks = [
   { name: 'Fitur', href: '#fitur' },
   { name: 'Dokumentasi', href: '#dokumentasi' },
-  { name: 'Panduan', href: '#panduan' },
   { name: 'Kontak', href: '#kontak' }
 ]
 </script>
@@ -27,25 +35,25 @@ const navLinks = [
       </nav>
 
       <!-- Tombol Hamburger HP -->
-      <button @click="isSidebarOpen = true" class="md:hidden p-2 rounded-lg text-gray-700 hover:bg-purple-50 focus:outline-none" aria-label="Open Menu">
+      <button @click="isSidebarOpen = true" class="md:hidden p-2 rounded-lg text-gray-700 hover:bg-purple-50 focus:outline-none">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
       </button>
     </div>
 
-    <!-- Mobile Sidebar Full Screen Overlay (Memperbaiki Masalah Teks Tumpuk) -->
+    <!-- Mobile Sidebar Full Screen Overlay (Fix Bug Tumpuk & Scroll) -->
     <Teleport to="body">
-      <div v-if="isSidebarOpen" class="fixed inset-0 bg-black/50 z-[90] md:hidden" @click="isSidebarOpen = false"></div>
+      <div v-if="isSidebarOpen" class="fixed inset-0 bg-black/50 z-[999] md:hidden" @click="isSidebarOpen = false"></div>
       
       <div 
-        class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-white z-[100] p-6 shadow-2xl transition-transform duration-300 md:hidden flex flex-col justify-between"
+        class="fixed top-0 right-0 h-[100dvh] w-4/5 max-w-sm bg-white z-[1000] p-6 shadow-2xl transition-transform duration-300 md:hidden flex flex-col justify-between overflow-y-auto"
         :class="isSidebarOpen ? 'translate-x-0' : 'translate-x-full'"
       >
         <div>
           <div class="flex justify-between items-center pb-4 border-b border-gray-100 mb-6">
             <span class="font-bold text-lg text-brand">Niki CoC Bot</span>
-            <button @click="isSidebarOpen = false" class="p-2 text-gray-500 hover:text-gray-800 focus:outline-none">
+            <button @click="isSidebarOpen = false" class="p-2 text-gray-500 hover:text-gray-800">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
@@ -63,7 +71,7 @@ const navLinks = [
             </a>
           </nav>
         </div>
-        <div class="pt-6 border-t border-gray-100">
+        <div class="pt-6 border-t border-gray-100 mt-auto">
           <a href="https://discord.com/oauth2/authorize?client_id=1553040946688696482&permissions=8&integration_type=0&scope=bot+applications.commands" target="_blank" class="block w-full py-3 text-center bg-brand text-white text-sm font-semibold rounded-xl hover:bg-brand-dark shadow-md">
             Invite Bot ke Server
           </a>
