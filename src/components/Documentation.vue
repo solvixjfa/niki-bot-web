@@ -2,7 +2,17 @@
   <section id="dokumentasi" class="max-w-5xl mx-auto px-6 py-16">
     <div class="text-center mb-12">
       <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Dokumentasi & Perintah Bot</h2>
-      <p class="mt-2 text-gray-600">Panduan penggunaan kalimat perintah (Slash Commands) untuk mengelola clan Anda.</p>
+      <p class="mt-2 text-gray-600">Panduan penggunaan kalimat perintah dan antarmuka Niki Bot.</p>
+    </div>
+
+    <!-- Tampilan Visual (Foto) -->
+    <div class="space-y-8 mb-12 max-w-4xl mx-auto">
+      <div class="rounded-2xl overflow-hidden shadow-lg border border-purple-100 bg-white p-2">
+        <img src="/coc.png" alt="Otomatisasi Clan" loading="lazy" decoding="async" class="w-full h-auto rounded-xl object-cover max-h-[400px]" />
+      </div>
+      <div class="rounded-2xl overflow-hidden shadow-lg border border-purple-100 bg-white p-2">
+        <img src="/coc-2.png" alt="Dokumentasi Niki CoC Bot" loading="lazy" decoding="async" class="w-full h-auto rounded-xl object-cover max-h-[400px]" />
+      </div>
     </div>
 
     <!-- Dokumentasi Teks Modul -->
@@ -45,7 +55,7 @@
           <div><span class="text-purple-400">/inactive check</span> - Memeriksa anggota pasif berdasarkan aktivitas login dan donasi.</div>
         </div>
       </div>
-
+      
       <!-- Modul Fitur AI -->
       <div class="bg-white p-6 rounded-2xl border border-purple-100 shadow-sm">
         <h3 class="text-xl font-bold text-brand mb-3">4. Kecerdasan Buatan (AI Assistant)</h3>

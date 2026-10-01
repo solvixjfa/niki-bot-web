@@ -7,7 +7,6 @@
       </div>
       <div class="flex gap-6 text-xs font-semibold">
         <a href="https://wa.me/6285736048626" class="text-gray-600 hover:text-brand">WhatsApp Admin</a>
-        <a href="https://ixiera.id" class="text-gray-600 hover:text-brand">ixiera.id</a>
       </div>
     </div>
     <div class="max-w-5xl mx-auto px-6 mt-8 pt-6 border-t border-gray-100 text-center text-xs text-gray-400">
