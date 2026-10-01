@@ -1,7 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-
-const activeTab = ref('clan')
 </script>
 
 <template>
@@ -44,11 +42,17 @@ const activeTab = ref('clan')
       </div>
     </section>
 
-    <!-- Preview Gambar (Proporsional & Ditingkatkan) -->
+    <!-- Preview Gambar (Dikondisikan Loading Cepat & Ukuran Ringan) -->
     <section class="max-w-3xl mx-auto px-6 mb-20">
       <div class="space-y-8">
         <div class="rounded-xl overflow-hidden shadow-md border border-gray-200 bg-gray-50">
-          <img src="/coc.png" alt="Preview Otomatisasi Clan" class="w-full h-auto object-cover max-h-[400px]" />
+          <img 
+            src="/coc.png" 
+            alt="Preview Otomatisasi Clan" 
+            loading="lazy"
+            decoding="async"
+            class="w-full h-auto object-cover max-h-[400px]" 
+          />
         </div>
       </div>
     </section>
@@ -113,7 +117,13 @@ const activeTab = ref('clan')
         <p class="mt-2 text-gray-600 text-sm">Contoh pesan dan laporan terstruktur yang dikirimkan oleh Niki Bot.</p>
       </div>
       <div class="rounded-xl overflow-hidden shadow-md border border-gray-200 bg-gray-50">
-        <img src="/coc-2.png" alt="Dokumentasi Niki CoC Bot" class="w-full h-auto object-cover max-h-[450px]" />
+        <img 
+          src="/coc-2.png" 
+          alt="Dokumentasi Niki CoC Bot" 
+          loading="lazy"
+          decoding="async"
+          class="w-full h-auto object-cover max-h-[450px]" 
+        />
       </div>
     </section>
 
