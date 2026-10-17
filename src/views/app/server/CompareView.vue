@@ -16,19 +16,21 @@
         <!-- Pilih Member -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-4 shadow-sm">
-            <label class="label text-brand font-bold">Member 1</label>
-            <select v-model="tag1" class="input w-full font-bold">
-              <option value="" disabled>Pilih Member...</option>
-              <option v-for="m in members" :key="m.tag" :value="m.tag">{{ m.name }} (TH{{ m.townhall_level }})</option>
-            </select>
+            <label class="label text-brand font-bold mb-2 block">Member 1</label>
+            <CustomSelect 
+              v-model="tag1" 
+              :options="memberOptions" 
+              placeholder="Pilih Member 1..." 
+            />
           </div>
           
           <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-4 shadow-sm">
-            <label class="label text-red-500 font-bold">Member 2</label>
-            <select v-model="tag2" class="input w-full font-bold">
-              <option value="" disabled>Pilih Member...</option>
-              <option v-for="m in members" :key="m.tag" :value="m.tag">{{ m.name }} (TH{{ m.townhall_level }})</option>
-            </select>
+            <label class="label text-red-500 font-bold mb-2 block">Member 2</label>
+            <CustomSelect 
+              v-model="tag2" 
+              :options="memberOptions" 
+              placeholder="Pilih Member 2..." 
+            />
           </div>
         </div>
 
@@ -111,10 +113,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { ref, computed, onMounted, inject } from 'vue'
 import { apiFetch } from '../../../lib/api'
 import { ASSETS } from '../../../lib/assets'
 import PremiumGate from '../../../components/PremiumGate.vue'
+import CustomSelect from '../../../components/ui/CustomSelect.vue'
 
 const tier = inject('serverTier', ref('free'))
 const loadingMembers = ref(true)
@@ -123,6 +126,14 @@ const members = ref([])
 const tag1 = ref('')
 const tag2 = ref('')
 const result = ref(null)
+
+// Map data member jadi format { value, label } buat CustomSelect
+const memberOptions = computed(() => {
+  return members.value.map(m => ({
+    value: m.tag,
+    label: `${m.name} (TH${m.townhall_level})`
+  }))
+})
 
 async function fetchMembers() {
   try {
