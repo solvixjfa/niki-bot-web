@@ -1,14 +1,14 @@
 <template>
   <div class="space-y-6">
     <div class="flex items-center gap-3 mb-4">
-      <IconWar className="w-6 h-6 text-gray-700" />
-      <h2 class="text-xl font-bold text-gray-900">War Status</h2>
+      <img :src="ASSETS.war" class="w-8 h-8 object-contain" alt="War" />
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white">War Status</h2>
     </div>
 
     <div v-if="loading" class="animate-pulse text-gray-500 text-sm">Memuat data war dari database...</div>
     
-    <div v-else-if="!war || war.state === 'notInWar'" class="bg-gray-50 border border-gray-200 rounded-xl p-8 text-center">
-      <p class="text-sm text-gray-600 font-medium">Clan ini sedang tidak dalam perang.</p>
+    <div v-else-if="!war || war.state === 'notInWar'" class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 text-center">
+      <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">Clan ini sedang tidak dalam perang.</p>
       <p class="text-xs text-gray-400 mt-1">Data diambil dari database sinkronisasi Niki.</p>
     </div>
 
@@ -22,7 +22,7 @@
           <div class="text-center flex-1">
             <div class="text-lg font-bold">Clan Kita</div>
             <div class="flex items-center justify-center gap-1.5 my-2">
-              <IconStar className="w-6 h-6 text-yellow-400 drop-shadow-md" />
+              <img :src="ASSETS.star" class="w-6 h-6 object-contain" alt="Star" />
               <span class="text-3xl font-black">{{ war.clan_stars }}</span>
             </div>
             <div class="text-sm text-gray-300 font-medium">{{ war.clan_destruction }}%</div>
@@ -33,7 +33,7 @@
           <div class="text-center flex-1">
             <div class="text-lg font-bold">{{ war.opponent_name }}</div>
             <div class="flex items-center justify-center gap-1.5 my-2">
-              <IconStar className="w-6 h-6 text-yellow-400 drop-shadow-md" />
+              <img :src="ASSETS.star" class="w-6 h-6 object-contain" alt="Star" />
               <span class="text-3xl font-black">{{ war.opp_stars }}</span>
             </div>
             <div class="text-sm text-gray-300 font-medium">{{ war.opp_destruction }}%</div>
@@ -47,8 +47,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { apiFetch } from '../../../lib/api'
-import IconWar from '../../../components/icons/IconWar.vue'
-import IconStar from '../../../components/icons/IconStar.vue'
+import { ASSETS } from '../../../lib/assets'
 
 const loading = ref(true)
 const war = ref(null)
