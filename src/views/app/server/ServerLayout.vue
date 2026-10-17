@@ -22,6 +22,8 @@
         <RouterLink :to="`/app/server/${guildId}`" exact-active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Overview</RouterLink>
         <RouterLink :to="`/app/server/${guildId}/war`" active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">War Status</RouterLink>
         <RouterLink :to="`/app/server/${guildId}/cwl`" active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">CWL</RouterLink>
+        <RouterLink :to="`/app/server/${guildId}/donations`" active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Donations</RouterLink>
+        <RouterLink :to="`/app/server/${guildId}/inactive`" active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Inactive</RouterLink>
         <RouterLink :to="`/app/server/${guildId}/members`" active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Members</RouterLink>
       </nav>
 
