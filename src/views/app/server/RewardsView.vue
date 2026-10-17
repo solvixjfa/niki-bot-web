@@ -50,6 +50,7 @@
             <thead class="text-xs text-gray-500 dark:text-gray-400 uppercase bg-gray-50 dark:bg-navy-800 border-b border-gray-200 dark:border-navy-700">
               <tr>
                 <th class="px-4 py-3">Nama Member</th>
+                <th class="px-4 py-3">Tipe</th>
                 <th class="px-4 py-3">Catatan</th>
                 <th class="px-4 py-3 text-right">Tanggal</th>
               </tr>
@@ -57,6 +58,9 @@
             <tbody>
               <tr v-for="r in rewards" :key="r.id" class="border-b border-gray-100 dark:border-navy-800 hover:bg-gray-50 dark:hover:bg-navy-800/50">
                 <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ r.name }}</td>
+                <td class="px-4 py-3">
+                  <span class="text-[10px] font-bold uppercase bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-2 py-0.5 rounded">{{ r.scope || 'clan' }}</span>
+                </td>
                 <td class="px-4 py-3 text-gray-600 dark:text-gray-300">{{ r.note }}</td>
                 <td class="px-4 py-3 text-right text-xs text-gray-500">{{ formatDate(r.date) }}</td>
               </tr>
