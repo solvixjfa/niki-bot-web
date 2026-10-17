@@ -133,7 +133,7 @@ import IconCapitalGold from '../../../components/icons/IconCapitalGold.vue'
 import IconStar from '../../../components/icons/IconStar.vue'
 
 const route = useRoute()
-const tier = inject('serverTier', 'free')
+const tier = inject('serverTier', ref('free'))
 const loading = ref(true)
 
 const members = ref([])

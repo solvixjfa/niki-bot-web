@@ -59,7 +59,7 @@ import { ref, onMounted, inject } from 'vue'
 import { apiFetch } from '../../../lib/api'
 import PremiumGate from '../../../components/PremiumGate.vue'
 
-const tier = inject('serverTier', 'free')
+const tier = inject('serverTier', ref('free'))
 const loading = ref(true)
 const error = ref('')
 const data = ref({ offense: [], defense: [] })
