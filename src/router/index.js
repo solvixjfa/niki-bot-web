@@ -5,16 +5,25 @@ import CallbackView from '../views/auth/CallbackView.vue'
 import DashboardLayout from '../views/app/DashboardLayout.vue'
 import HomeView from '../views/app/HomeView.vue'
 import AccountView from '../views/app/AccountView.vue'
+
 import ServerLayout from '../views/app/server/ServerLayout.vue'
 import ServerHomeView from '../views/app/server/ServerHomeView.vue'
+
+// War Group
+import WarLayout from '../views/app/server/WarLayout.vue'
 import WarView from '../views/app/server/WarView.vue'
-import MembersView from '../views/app/server/MembersView.vue'
 import CwlView from '../views/app/server/CwlView.vue'
+import RaceWarView from '../views/app/server/RaceWarView.vue'
+
+// Members Group
+import MembersLayout from '../views/app/server/MembersLayout.vue'
+import MembersView from '../views/app/server/MembersView.vue'
 import DonationsView from '../views/app/server/DonationsView.vue'
 import InactiveView from '../views/app/server/InactiveView.vue'
-import CapitalView from '../views/app/server/CapitalView.vue'
 import LeaderboardView from '../views/app/server/LeaderboardView.vue'
-import RaceWarView from '../views/app/server/RaceWarView.vue'
+
+// Capital
+import CapitalView from '../views/app/server/CapitalView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -33,14 +42,34 @@ const router = createRouter({
           component: ServerLayout,
           children: [
             { path: '', name: 'server-home', component: ServerHomeView },
-            { path: 'war', name: 'server-war', component: WarView },
-            { path: 'cwl', name: 'server-cwl', component: CwlView },
-            { path: 'donations', name: 'server-donations', component: DonationsView },
-            { path: 'inactive', name: 'server-inactive', component: InactiveView },
-            { path: 'members', name: 'server-members', component: MembersView },
+            
+            // WAR GROUP
+            {
+              path: 'war',
+              component: WarLayout,
+              children: [
+                { path: '', redirect: to => `/app/server/${to.params.guildId}/war/status` },
+                { path: 'status', name: 'server-war', component: WarView },
+                { path: 'cwl', name: 'server-cwl', component: CwlView },
+                { path: 'race', name: 'server-racewar', component: RaceWarView },
+              ]
+            },
+
+            // MEMBERS GROUP
+            {
+              path: 'members',
+              component: MembersLayout,
+              children: [
+                { path: '', redirect: to => `/app/server/${to.params.guildId}/members/list` },
+                { path: 'list', name: 'server-members', component: MembersView },
+                { path: 'donations', name: 'server-donations', component: DonationsView },
+                { path: 'inactive', name: 'server-inactive', component: InactiveView },
+                { path: 'leaderboard', name: 'server-leaderboard', component: LeaderboardView },
+              ]
+            },
+
+            // CAPITAL
             { path: 'capital', name: 'server-capital', component: CapitalView },
-            { path: 'leaderboard', name: 'server-leaderboard', component: LeaderboardView },
-            { path: 'racewar', name: 'server-racewar', component: RaceWarView },
           ]
         }
       ],

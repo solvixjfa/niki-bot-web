@@ -21,7 +21,7 @@ export async function apiFetch(path, options = {}) {
   const cacheKey = `${activeGuildId}_${path}`
 
   // Cek Cache (Hanya untuk GET)
-  if (method === 'GET' && cache.has(cacheKey)) {
+  if (method === 'GET' && path !== '/auth/me' && cache.has(cacheKey)) {
     const cached = cache.get(cacheKey)
     if (Date.now() - cached.timestamp < CACHE_TTL) {
       // console.log('Serving from cache:', path)
@@ -50,7 +50,7 @@ export async function apiFetch(path, options = {}) {
   const data = await res.json()
 
   // Simpan ke Cache (Hanya untuk GET)
-  if (method === 'GET') {
+  if (method === 'GET' && path !== '/auth/me') {
     cache.set(cacheKey, { data, timestamp: Date.now() })
   }
 

@@ -17,41 +17,23 @@
     </div>
     
     <div class="flex flex-col md:flex-row gap-4 md:gap-6">
+      <!-- HANYA 4 MENU UTAMA -->
       <nav class="w-full md:w-56 flex flex-row md:flex-col gap-2 shrink-0 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
         <RouterLink :to="`/app/server/${guildId}`" :class="[
             $route.path === `/app/server/${guildId}` ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
           ]" class="px-4 py-2.5 rounded-xl text-sm font-semibold border whitespace-nowrap transition-all">Overview</RouterLink>
-        <RouterLink :to="`/app/server/${guildId}/war`" :class="[
-            $route.path === `/app/server/${guildId}/war` ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
-          ]" class="px-4 py-2.5 rounded-xl text-sm font-semibold border whitespace-nowrap transition-all">War Status</RouterLink>
-        <RouterLink :to="`/app/server/${guildId}/cwl`" :class="[
-            $route.path === `/app/server/${guildId}/cwl` ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
-          ]" class="px-4 py-2.5 rounded-xl text-sm font-semibold border whitespace-nowrap transition-all">CWL</RouterLink>
-        <RouterLink :to="`/app/server/${guildId}/donations`" :class="[
-            $route.path === `/app/server/${guildId}/donations` ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
-          ]" class="px-4 py-2.5 rounded-xl text-sm font-semibold border whitespace-nowrap transition-all">Donations</RouterLink>
-        <RouterLink :to="`/app/server/${guildId}/inactive`" :class="[
-            $route.path === `/app/server/${guildId}/inactive` ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
-          ]" class="px-4 py-2.5 rounded-xl text-sm font-semibold border whitespace-nowrap transition-all">Inactive</RouterLink>
-        <RouterLink :to="`/app/server/${guildId}/members`" :class="[
-            $route.path === `/app/server/${guildId}/members` ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
-          ]" class="px-4 py-2.5 rounded-xl text-sm font-semibold border whitespace-nowrap transition-all">Members</RouterLink>
-        <RouterLink :to="`/app/server/${guildId}/capital`" :class="[
-            $route.path === `/app/server/${guildId}/capital` ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
-          ]" class="px-4 py-2.5 rounded-xl text-sm font-semibold border whitespace-nowrap transition-all">Capital</RouterLink>
           
-        <!-- MENU STANDARD TIER -->
-        <div class="hidden md:block border-t border-gray-200 dark:border-zinc-800 my-2"></div>
-        <RouterLink :to="`/app/server/${guildId}/leaderboard`" :class="[
-            $route.path === `/app/server/${guildId}/leaderboard` ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
-          ]" class="px-4 py-2.5 rounded-xl text-sm font-semibold border whitespace-nowrap transition-all flex justify-between items-center">
-          Leaderboard <span class="text-[10px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
-        </RouterLink>
-        <RouterLink :to="`/app/server/${guildId}/racewar`" :class="[
-            $route.path === `/app/server/${guildId}/racewar` ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
-          ]" class="px-4 py-2.5 rounded-xl text-sm font-semibold border whitespace-nowrap transition-all flex justify-between items-center">
-          Race War <span class="text-[10px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
-        </RouterLink>
+        <RouterLink :to="`/app/server/${guildId}/war/status`" :class="[
+            $route.path.includes('/war') ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
+          ]" class="px-4 py-2.5 rounded-xl text-sm font-semibold border whitespace-nowrap transition-all">War Room</RouterLink>
+          
+        <RouterLink :to="`/app/server/${guildId}/members/list`" :class="[
+            $route.path.includes('/members') ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
+          ]" class="px-4 py-2.5 rounded-xl text-sm font-semibold border whitespace-nowrap transition-all">Members</RouterLink>
+          
+        <RouterLink :to="`/app/server/${guildId}/capital`" :class="[
+            $route.path.includes('/capital') ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800'
+          ]" class="px-4 py-2.5 rounded-xl text-sm font-semibold border whitespace-nowrap transition-all">Capital</RouterLink>
       </nav>
 
       <div class="flex-1 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-4 md:p-6 min-h-[400px] shadow-sm transition-colors duration-300">
@@ -80,8 +62,6 @@ onMounted(async () => {
       serverClanTag.value = thisServer.clan_tag
       badgeUrl.value = thisServer.clan_badge_url
       serverTier.value = thisServer.tier || 'free'
-      
-      // Provide Ref-nya langsung biar reaktif
       provide('serverTier', serverTier) 
     } else {
       serverClanTag.value = 'Unknown'
