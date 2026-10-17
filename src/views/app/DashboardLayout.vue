@@ -76,6 +76,7 @@
               <RouterLink :to="`/app/server/${currentGuildId}/members/donations`" @click="isSidebarOpen = false" class="block px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">Donations</RouterLink>
               <RouterLink :to="`/app/server/${currentGuildId}/members/leaderboard`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">Leaderboard <span class="text-[8px] bg-purple-100 text-purple-700 px-1 rounded">STD</span></RouterLink>
               <RouterLink :to="`/app/server/${currentGuildId}/members/compare`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">Compare <span class="text-[8px] bg-purple-100 text-purple-700 px-1 rounded">STD</span></RouterLink>
+              <RouterLink :to="`/app/server/${currentGuildId}/members/rewards`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">Rewards <span class="text-[8px] bg-purple-100 text-purple-700 px-1 rounded">STD</span></RouterLink>
             </div>
           </div>
 

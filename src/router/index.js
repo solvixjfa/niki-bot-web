@@ -26,6 +26,7 @@ import DonationsView from '../views/app/server/DonationsView.vue'
 import InactiveView from '../views/app/server/InactiveView.vue'
 import LeaderboardView from '../views/app/server/LeaderboardView.vue'
 import CompareView from '../views/app/server/CompareView.vue'
+import RewardsView from '../views/app/server/RewardsView.vue'
 
 // Capital
 import CapitalView from '../views/app/server/CapitalView.vue'
@@ -75,6 +76,7 @@ const router = createRouter({
                 { path: 'inactive', name: 'server-inactive', component: InactiveView },
                 { path: 'leaderboard', name: 'server-leaderboard', component: LeaderboardView },
                 { path: 'compare', name: 'server-compare', component: CompareView },
+                { path: 'rewards', name: 'server-rewards', component: RewardsView },
               ]
             },
 
