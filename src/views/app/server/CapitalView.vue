@@ -1,47 +1,80 @@
 <template>
   <div class="space-y-6">
-    <div class="flex items-center gap-3 mb-4">
+    <!-- Header -->
+    <div class="flex items-center gap-3 mb-2">
       <IconCapitalGold className="w-8 h-8" />
-      <h2 class="text-xl font-bold text-gray-900 dark:text-white">Clan Capital Raid Weekend</h2>
+      <div>
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Clan Capital</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400">Raid Weekend & Kontribusi</p>
+      </div>
     </div>
 
-    <div v-if="loading" class="animate-pulse text-gray-500 dark:text-gray-400 text-sm">Memuat data Capital...</div>
+    <div v-if="loading" class="animate-pulse text-gray-500 dark:text-gray-400 text-sm">Memuat data...</div>
     
     <div v-else-if="!capitalData || capitalData.error" class="bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-8 text-center">
       <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">{{ capitalData?.error || 'Belum ada data Raid Weekend.' }}</p>
     </div>
 
-    <div v-else class="space-y-4">
-      <!-- Card Ringkasan Raid -->
-      <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 shadow-sm">
-        <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-4">Ringkasan Performa Distrik</h3>
-        
-        <div class="space-y-3 text-sm">
-          <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2">
-            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2"><IconCapitalGold className="w-4 h-4" /> Total Loot</span>
-            <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.total_loot?.toLocaleString() }} Gold</span>
-          </div>
-          <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2">
-            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2"><IconWar className="w-4 h-4 text-gray-600 dark:text-gray-400" /> Total Attack</span>
-            <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.total_attacks }} Serangan</span>
-          </div>
-          <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2">
-            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2">Distrik Rata-Rata</span>
-            <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.districts_destroyed }}</span>
-          </div>
-          <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2">
-            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2">Raid Selesai</span>
-            <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.completed_raids }}</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2">Bonus Pertahanan</span>
-            <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.defensive_rewards?.toLocaleString() }} Gold</span>
+    <div v-else>
+      <!-- Tab Navigation -->
+      <div class="border-b border-gray-200 dark:border-zinc-800 mb-6">
+        <nav class="flex gap-1 -mb-px overflow-x-auto hide-scrollbar">
+          <button 
+            @click="activeTab = 'summary'"
+            class="px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap"
+            :class="activeTab === 'summary' ? 'border-brand text-brand dark:text-purple-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
+          >
+            Summary
+          </button>
+          <button 
+            @click="activeTab = 'donations'"
+            class="px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap"
+            :class="activeTab === 'donations' ? 'border-brand text-brand dark:text-purple-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
+          >
+            Top Donations
+          </button>
+          <button 
+            @click="activeTab = 'raid'"
+            class="px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap"
+            :class="activeTab === 'raid' ? 'border-brand text-brand dark:text-purple-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
+          >
+            Raid Stats
+          </button>
+        </nav>
+      </div>
+
+      <!-- KONTEN: TAB SUMMARY -->
+      <div v-if="activeTab === 'summary'" class="space-y-4">
+        <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 shadow-sm">
+          <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-4">Ringkasan Performa Distrik</h3>
+          
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2">
+              <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2"><IconCapitalGold className="w-4 h-4" /> Total Loot</span>
+              <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.total_loot?.toLocaleString() }} Gold</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2">
+              <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2"><IconWar className="w-4 h-4 text-gray-600 dark:text-gray-400" /> Total Attack</span>
+              <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.total_attacks }} Serangan</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2">
+              <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2">Distrik Rata-Rata</span>
+              <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.districts_destroyed }}</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2">
+              <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2">Raid Selesai</span>
+              <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.completed_raids }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2">Bonus Pertahanan</span>
+              <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.defensive_rewards?.toLocaleString() }} Gold</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Card Top Donatur -->
-      <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 shadow-sm">
+      <!-- KONTEN: TAB DONATIONS -->
+      <div v-if="activeTab === 'donations'" class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 shadow-sm">
         <div class="flex items-center gap-2 mb-4">
           <h3 class="font-bold text-gray-900 dark:text-white">Top 10 Donatur Capital Gold</h3>
         </div>
@@ -76,8 +109,8 @@
         </div>
       </div>
 
-      <!-- Card Rekap Partisipasi Raid (NEW) -->
-      <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 shadow-sm">
+      <!-- KONTEN: TAB RAID STATS -->
+      <div v-if="activeTab === 'raid'" class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 shadow-sm">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div>
             <h3 class="font-bold text-gray-900 dark:text-white">Rekap Partisipasi Raid</h3>
@@ -120,6 +153,7 @@
           </table>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -132,6 +166,7 @@ import IconCapitalGold from '../../../components/icons/IconCapitalGold.vue'
 import IconWar from '../../../components/icons/IconWar.vue'
 
 const loading = ref(true)
+const activeTab = ref('summary') // Default tab yang kebuka
 const capitalData = ref(null)
 const donations = ref([])
 const raidStats = ref([])
@@ -155,16 +190,10 @@ onMounted(async () => {
 
 function downloadCSV() {
   if (!raidStats.value.length) return
-
-  // Bikin header CSV
   let csvContent = "Nama Member,Status,Serangan Terpakai,Maksimal Serangan,Loot Diperoleh\n"
-  
-  // Isi data
   raidStats.value.forEach(row => {
     csvContent += `"${row.name}","${row.status}",${row.attacks},${row.max_attacks},${row.loot}\n`
   })
-
-  // Trigger download di browser
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
   const link = document.createElement("a")
   const url = URL.createObjectURL(blob)
@@ -175,3 +204,8 @@ function downloadCSV() {
   document.body.removeChild(link)
 }
 </script>
+
+<style scoped>
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
