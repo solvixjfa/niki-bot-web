@@ -4,6 +4,8 @@ import LandingView from '../views/landing/LandingView.vue'
 import CallbackView from '../views/auth/CallbackView.vue'
 import DashboardLayout from '../views/app/DashboardLayout.vue'
 import HomeView from '../views/app/HomeView.vue'
+import ServerLayout from '../views/app/server/ServerLayout.vue'
+import ServerHomeView from '../views/app/server/ServerHomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -16,6 +18,14 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         { path: '', name: 'app-home', component: HomeView },
+        {
+          path: 'server/:guildId',
+          component: ServerLayout,
+          children: [
+            { path: '', name: 'server-home', component: ServerHomeView },
+            // Nanti tambahkan rute /war, /members, dll di sini
+          ]
+        }
       ],
     },
     { path: '/:pathMatch(.*)*', redirect: '/' },
