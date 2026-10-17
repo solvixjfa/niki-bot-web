@@ -7,15 +7,19 @@
       <div v-else-if="error" class="text-red-500 text-sm py-8 text-center">{{ error }}</div>
       
       <div v-else>
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <!-- Header & Search -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
           <div>
             <h3 class="font-bold text-gray-900 dark:text-white">Rekap War vs {{ warData.opponent }}</h3>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Status: {{ warData.state }}</p>
           </div>
-          <button @click="downloadCSV" class="px-4 py-2 bg-brand hover:bg-brand-dark text-white text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm shrink-0">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-            Download CSV
-          </button>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <SearchInput v-model="searchQuery" placeholder="Cari nama member..." class="w-full sm:w-64" />
+            <button @click="downloadCSV" class="px-4 py-2 bg-brand hover:bg-brand-dark text-white text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              CSV
+            </button>
+          </div>
         </div>
 
         <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl overflow-hidden shadow-sm">
@@ -31,8 +35,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(r, i) in warData.data" :key="i" class="border-b border-gray-100 dark:border-navy-800 hover:bg-gray-50 dark:hover:bg-navy-800/50">
-                <td class="px-4 py-3 text-gray-400 font-bold">{{ r.map_pos }}</td>
+              <tr v-if="filteredData.length === 0">
+                <td colspan="6" class="px-4 py-8 text-center text-gray-500">Member tidak ditemukan.</td>
+              </tr>
+              <tr v-for="(r, i) in filteredData" :key="i" class="border-b border-gray-100 dark:border-navy-800 hover:bg-gray-50 dark:hover:bg-navy-800/50">
+                <td class="px-4 py-3 text-gray-400 font-bold">{{ i + 1 }}</td>
                 <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ r.name }}</td>
                 <td class="px-4 py-3 text-center">
                   <div class="flex items-center justify-center gap-1">
@@ -55,15 +62,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { ref, computed, onMounted, inject } from 'vue'
 import { apiFetch } from '../../../lib/api'
 import { ASSETS } from '../../../lib/assets'
 import PremiumGate from '../../../components/PremiumGate.vue'
+import SearchInput from '../../../components/ui/SearchInput.vue'
 
 const tier = inject('serverTier', ref('free'))
 const loading = ref(true)
 const error = ref('')
 const warData = ref({ opponent: '', state: '', data: [] })
+const searchQuery = ref('')
+
+// Filter data berdasarkan pencarian
+const filteredData = computed(() => {
+  if (!searchQuery.value) return warData.value.data
+  return warData.value.data.filter(r => 
+    r.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+})
 
 onMounted(async () => {
   if (tier.value === 'free') { loading.value = false; return }
@@ -79,21 +96,16 @@ onMounted(async () => {
 })
 
 function downloadCSV() {
-  if (!warData.value.data.length) return
-  
-  // Bikin header
+  if (!filteredData.value.length) return
   let csv = "Posisi,Nama,TH,Attack,Stars,Destruction%\n"
-  
-  // Isi data
-  warData.value.data.forEach(r => {
-    csv += `${r.map_pos},"${r.name}",${r.th},${r.attacks_used}/${r.attacks_allowed},${r.total_stars},${r.total_destruction}\n`
+  filteredData.value.forEach((r, i) => {
+    csv += `${i + 1},"${r.name}",${r.th},${r.attacks_used}/${r.attacks_allowed},${r.total_stars},${r.total_destruction}\n`
   })
-
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
   const link = document.createElement("a")
   const url = URL.createObjectURL(blob)
   link.setAttribute("href", url)
-  link.setAttribute("download", `Rekap_War_${warData.value.opponent}_${new Date().toISOString().split('T')[0]}.csv`)
+  link.setAttribute("download", `Rekap_War_${warData.value.opponent}.csv`)
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)

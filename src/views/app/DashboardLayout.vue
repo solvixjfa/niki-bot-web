@@ -116,6 +116,13 @@
             </div>
             <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
           </RouterLink>
+          <RouterLink :to="`/app/server/${currentGuildId}/war/recap`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
+            <div class="flex items-center gap-3">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              Rekap War
+            </div>
+            <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
+          </RouterLink>
         </template>
         <template v-else>
           <div class="px-3 py-4 text-xs text-center text-gray-500">Pilih server terlebih dahulu.</div>
