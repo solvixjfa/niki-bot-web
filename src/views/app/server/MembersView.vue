@@ -27,7 +27,7 @@
             <td class="px-4 py-3 text-gray-500">{{ m.role }}</td>
             <td class="px-4 py-3 text-center">
               <div class="flex items-center justify-center gap-1">
-                <img :src="ASSETS.getTh(m.townhall_level)" class="w-6 h-6 object-contain" :alt="'TH ' + m.townhall_level" />
+                <img :src="ASSETS.getTh(m.townhall_level)" class="w-6 h-6 object-contain drop-shadow-sm" :alt="'TH ' + m.townhall_level" />
                 <span class="font-bold text-gray-700">{{ m.townhall_level }}</span>
               </div>
             </td>
