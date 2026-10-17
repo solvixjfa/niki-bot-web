@@ -2,72 +2,77 @@
   <div class="space-y-6">
     <div class="flex items-center gap-3 mb-4">
       <img :src="ASSETS.capitalGold" class="w-8 h-8 object-contain" alt="Capital" />
-      <h2 class="text-xl font-bold text-gray-900 dark:text-white">Clan Capital & Raid</h2>
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white">Clan Capital Raid Weekend</h2>
     </div>
 
-    <div v-if="loading" class="animate-pulse text-gray-500 text-sm">Memuat data Capital...</div>
+    <div v-if="loading" class="animate-pulse text-gray-500 dark:text-gray-400 text-sm">Memuat data Capital...</div>
     
-    <div v-else-if="!data" class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 text-center">
-      <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">Belum ada data Raid Weekend.</p>
+    <div v-else-if="!capitalData || capitalData.error" class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 text-center">
+      <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">{{ capitalData?.error || 'Belum ada data Raid Weekend.' }}</p>
     </div>
 
     <div v-else class="space-y-4">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm flex items-center justify-between">
-          <div>
-            <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider mb-1">Capital Hall</p>
-            <h3 class="text-2xl font-black text-gray-900 dark:text-white">{{ data.capital_hall }}</h3>
+      <!-- Card Ringkasan Raid -->
+      <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm">
+        <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-4">Ringkasan Performa Distrik</h3>
+        
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-800 pb-2">
+            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2"><img :src="ASSETS.capitalGold" class="w-4 h-4" /> Total Loot</span>
+            <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.total_loot?.toLocaleString() }} Gold</span>
           </div>
-          <div class="w-12 h-12 bg-gray-50 dark:bg-gray-700 rounded-full flex items-center justify-center border border-gray-100 dark:border-gray-600">
-            <img :src="ASSETS.getTh(10)" class="w-8 h-8 object-contain drop-shadow-sm" /> 
+          <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-800 pb-2">
+            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2"><img :src="ASSETS.war" class="w-4 h-4" /> Total Attack</span>
+            <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.total_attacks }} Serangan</span>
           </div>
-        </div>
-
-        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm flex items-center justify-between">
-          <div>
-            <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider mb-1">Raid Medals</p>
-            <div class="flex items-center gap-2">
-              <img :src="ASSETS.raidMedal" class="w-6 h-6 object-contain" alt="Medal" />
-              <h3 class="text-2xl font-black text-gray-900 dark:text-white">{{ data.raid_medals.toLocaleString() }}</h3>
-            </div>
+          <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-800 pb-2">
+            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2">🔥 Distrik Rata-Rata</span>
+            <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.districts_destroyed }}</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-800 pb-2">
+            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2">🏆 Raid Selesai</span>
+            <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.completed_raids }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2">🛡️ Bonus Pertahanan</span>
+            <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.defensive_rewards?.toLocaleString() }} Gold</span>
           </div>
         </div>
       </div>
 
-      <div class="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl p-6 shadow-lg">
-        <div class="flex items-center justify-between mb-6">
-          <div class="flex items-center gap-2">
-            <img :src="ASSETS.capitalGold" class="w-6 h-6 object-contain" alt="Gold" />
-            <h3 class="font-bold text-lg">Raid Weekend</h3>
-          </div>
-          <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-bold uppercase">{{ data.state }}</span>
+      <!-- Card Top Donatur -->
+      <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+          <h3 class="font-bold text-gray-900 dark:text-white">Top 10 Donatur Capital Gold</h3>
         </div>
         
-        <div class="grid grid-cols-2 gap-4 text-center">
-          <div>
-            <p class="text-xs text-gray-400 mb-1">Districts Destroyed</p>
-            <p class="text-xl font-bold">{{ data.districts_destroyed }}</p>
-          </div>
-          <div>
-            <p class="text-xs text-gray-400 mb-1">Attacks Used</p>
-            <p class="text-xl font-bold">{{ data.attacks_used }} / {{ data.attacks_used * 6 }}</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm">
-        <div class="flex items-center gap-2 mb-4">
-          <img :src="ASSETS.capitalGold" class="w-5 h-5 object-contain" alt="Gold" />
-          <h3 class="font-bold text-gray-900 dark:text-white">Top Donatur Capital Gold</h3>
-        </div>
-        <div class="space-y-2">
-          <div v-for="(d, i) in data.top_donors" :key="i" class="flex justify-between items-center text-sm border-b border-gray-50 dark:border-gray-700 pb-2 last:border-0">
-            <span class="font-medium text-gray-700 dark:text-gray-300">{{ i + 1 }}. {{ d.name }}</span>
-            <div class="flex items-center gap-1 text-yellow-600 font-bold">
-              <img :src="ASSETS.capitalGold" class="w-4 h-4 object-contain" />
-              {{ d.donations.toLocaleString() }}
-            </div>
-          </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left">
+            <thead class="text-xs text-gray-500 dark:text-gray-400 uppercase bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+              <tr>
+                <th class="px-4 py-3">Nama</th>
+                <th class="px-4 py-3 text-center">TH</th>
+                <th class="px-4 py-3 text-right">Kontribusi Gold</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(d, i) in donations" :key="i" class="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ i + 1 }}. {{ d.name }}</td>
+                <td class="px-4 py-3 text-center">
+                  <div class="flex items-center justify-center gap-1">
+                    <img :src="ASSETS.getTh(d.townhall)" class="w-6 h-6 object-contain drop-shadow-sm" :alt="'TH ' + d.townhall" />
+                    <span class="font-bold text-gray-700 dark:text-gray-300">{{ d.townhall }}</span>
+                  </div>
+                </td>
+                <td class="px-4 py-3 text-right font-bold text-yellow-600 dark:text-yellow-500">
+                  <div class="flex items-center justify-end gap-1">
+                    <img :src="ASSETS.capitalGold" class="w-4 h-4 object-contain" />
+                    {{ d.contributions.toLocaleString() }}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -80,11 +85,17 @@ import { apiFetch } from '../../../lib/api'
 import { ASSETS } from '../../../lib/assets'
 
 const loading = ref(true)
-const data = ref(null)
+const capitalData = ref(null)
+const donations = ref([])
 
 onMounted(async () => {
   try {
-    data.value = await apiFetch('/clan/capital')
+    const [cap, don] = await Promise.all([
+      apiFetch('/clan/capital'),
+      apiFetch('/clan/capitaldonations')
+    ])
+    capitalData.value = cap
+    donations.value = don
   } catch (err) {
     console.error('Failed to load capital:', err)
   } finally {
