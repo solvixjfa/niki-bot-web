@@ -1,8 +1,8 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-slate-950 text-white">
+  <div class="min-h-screen flex items-center justify-center bg-gray-50 text-gray-900">
     <div class="text-center space-y-4">
-      <div class="w-12 h-12 mx-auto border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-      <p class="text-sm text-slate-400">{{ message }}</p>
+      <div class="w-12 h-12 mx-auto border-4 border-brand border-t-transparent rounded-full animate-spin"></div>
+      <p class="text-sm text-gray-500">{{ message }}</p>
     </div>
   </div>
 </template>
@@ -11,15 +11,17 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { getApiUrl } from '../../lib/api'
+import { useAuth } from '../../composables/useAuth'
 
 const router = useRouter()
 const route = useRoute()
-const message = ref('Authenticating...')
+const message = ref('Menghubungkan ke Discord...')
+const { setAuth } = useAuth()
 
 onMounted(async () => {
   const code = route.query.code
   if (!code) {
-    message.value = 'Missing authorization code. Redirecting...'
+    message.value = 'Kode otorisasi tidak ditemukan. Kembali ke beranda...'
     setTimeout(() => router.push('/'), 1500)
     return
   }
@@ -35,11 +37,17 @@ onMounted(async () => {
       throw new Error(err.detail || 'Login failed')
     }
     const data = await res.json()
-    localStorage.setItem('niki_token', data.access_token)
-    localStorage.setItem('niki_user', JSON.stringify(data.user))
-    router.push('/app')
+    setAuth(data.access_token, data.user)
+    
+    // Kalau user punya server, lempar ke dashboard. Kalau nggak, lempar ke landing dengan pesan.
+    if (data.servers && data.servers.length > 0) {
+      router.push('/app')
+    } else {
+      message.value = 'Kamu belum setup bot di server manapun. Kembali ke beranda...'
+      setTimeout(() => router.push('/'), 2000)
+    }
   } catch (err) {
-    message.value = 'Login failed: ' + err.message
+    message.value = 'Login gagal: ' + err.message
     setTimeout(() => router.push('/'), 2500)
   }
 })
