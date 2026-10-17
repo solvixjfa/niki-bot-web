@@ -14,6 +14,8 @@ import WarLayout from '../views/app/server/WarLayout.vue'
 import WarView from '../views/app/server/WarView.vue'
 import CwlView from '../views/app/server/CwlView.vue'
 import RaceWarView from '../views/app/server/RaceWarView.vue'
+import RaceCwlView from '../views/app/server/RaceCwlView.vue'
+import ThCompositionView from '../views/app/server/ThCompositionView.vue'
 import RecapWarView from '../views/app/server/RecapWarView.vue'
 import RecapCwlView from '../views/app/server/RecapCwlView.vue'
 
@@ -55,6 +57,8 @@ const router = createRouter({
                 { path: 'status', name: 'server-war', component: WarView },
                 { path: 'cwl', name: 'server-cwl', component: CwlView },
                 { path: 'race', name: 'server-racewar', component: RaceWarView },
+                { path: 'racecwl', name: 'server-racecwl', component: RaceCwlView },
+                { path: 'thcomp', name: 'server-thcomp', component: ThCompositionView },
                 { path: 'recap', name: 'server-recapwar', component: RecapWarView },
                 { path: 'recap-cwl', name: 'server-recacpwl', component: RecapCwlView },
               ]

@@ -35,7 +35,6 @@
         </button>
       </div>
       
-      <!-- Tombol Close Mobile -->
       <button @click="isSidebarOpen = false" class="md:hidden absolute top-4 right-4 p-2 text-gray-500 dark:text-gray-400">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
       </button>
@@ -44,14 +43,8 @@
       <div v-if="servers.length > 0" class="mt-8 md:mt-2 mb-4 shrink-0 px-2">
         <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Pilih Server</p>
         <div class="relative">
-          <select 
-            v-model="currentGuildId" 
-            @change="handleServerChange"
-            class="w-full appearance-none bg-gray-50 dark:bg-navy-800 border border-gray-200 dark:border-navy-700 text-gray-900 dark:text-white text-sm font-bold rounded-lg px-3 py-2 pr-8 outline-none focus:border-brand cursor-pointer"
-          >
-            <option v-for="s in servers" :key="s.guild_id" :value="s.guild_id">
-              {{ s.clan_tag }}
-            </option>
+          <select v-model="currentGuildId" @change="handleServerChange" class="w-full appearance-none bg-gray-50 dark:bg-navy-800 border border-gray-200 dark:border-navy-700 text-gray-900 dark:text-white text-sm font-bold rounded-lg px-3 py-2 pr-8 outline-none focus:border-brand cursor-pointer">
+            <option v-for="s in servers" :key="s.guild_id" :value="s.guild_id">{{ s.clan_tag }}</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -60,72 +53,78 @@
       </div>
 
       <!-- MENU FULL -->
-      <div class="flex-1 flex flex-col mt-2">
-        <p class="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 shrink-0">Menu Server</p>
-        
+      <div class="flex-1 flex flex-col mt-2 space-y-1">
         <template v-if="currentGuildId">
+          
+          <!-- OVERVIEW -->
           <RouterLink :to="`/app/server/${currentGuildId}`" @click="isSidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400" exact>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
             Dashboard
           </RouterLink>
-          <RouterLink :to="`/app/server/${currentGuildId}/members/list`" @click="isSidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            Clan
-          </RouterLink>
-          <RouterLink :to="`/app/server/${currentGuildId}/war/status`" @click="isSidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            War
-          </RouterLink>
-          <RouterLink :to="`/app/server/${currentGuildId}/war/cwl`" @click="isSidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-            CWL
-          </RouterLink>
-          <RouterLink :to="`/app/server/${currentGuildId}/capital`" @click="isSidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-            Raid Weekend
-          </RouterLink>
-          <RouterLink :to="`/app/server/${currentGuildId}/members/donations`" @click="isSidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            Donations
-          </RouterLink>
-          
-          <div class="border-t border-gray-100 dark:border-navy-800 my-2 pt-2"></div>
-          
-          <RouterLink :to="`/app/server/${currentGuildId}/members/leaderboard`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
-            <div class="flex items-center gap-3">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-              Leaderboard
+
+          <!-- CLAN GROUP -->
+          <div>
+            <button @click="toggleGroup('clan')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-navy-800 transition-colors">
+              <div class="flex items-center gap-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                Clan
+              </div>
+              <svg class="w-4 h-4 transition-transform" :class="openGroups.clan ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div v-show="openGroups.clan" class="pl-4 pr-1 py-1 space-y-1">
+              <RouterLink :to="`/app/server/${currentGuildId}/members/list`" @click="isSidebarOpen = false" class="block px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">List Member</RouterLink>
+              <RouterLink :to="`/app/server/${currentGuildId}/members/donations`" @click="isSidebarOpen = false" class="block px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">Donations</RouterLink>
+              <RouterLink :to="`/app/server/${currentGuildId}/members/leaderboard`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">Leaderboard <span class="text-[8px] bg-purple-100 text-purple-700 px-1 rounded">STD</span></RouterLink>
+              <RouterLink :to="`/app/server/${currentGuildId}/members/compare`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">Compare <span class="text-[8px] bg-purple-100 text-purple-700 px-1 rounded">STD</span></RouterLink>
             </div>
-            <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
-          </RouterLink>
-          <RouterLink :to="`/app/server/${currentGuildId}/war/race`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
-            <div class="flex items-center gap-3">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-              Race War
+          </div>
+
+          <!-- WAR GROUP -->
+          <div>
+            <button @click="toggleGroup('war')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-navy-800 transition-colors">
+              <div class="flex items-center gap-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                War
+              </div>
+              <svg class="w-4 h-4 transition-transform" :class="openGroups.war ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div v-show="openGroups.war" class="pl-4 pr-1 py-1 space-y-1">
+              <RouterLink :to="`/app/server/${currentGuildId}/war/status`" @click="isSidebarOpen = false" class="block px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">Status War</RouterLink>
+              <RouterLink :to="`/app/server/${currentGuildId}/war/cwl`" @click="isSidebarOpen = false" class="block px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">CWL</RouterLink>
+              <RouterLink :to="`/app/server/${currentGuildId}/war/race`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">Race War <span class="text-[8px] bg-purple-100 text-purple-700 px-1 rounded">STD</span></RouterLink>
+              <RouterLink :to="`/app/server/${currentGuildId}/war/racecwl`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">Race CWL <span class="text-[8px] bg-purple-100 text-purple-700 px-1 rounded">STD</span></RouterLink>
+              <RouterLink :to="`/app/server/${currentGuildId}/war/thcomp`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">TH Comp <span class="text-[8px] bg-purple-100 text-purple-700 px-1 rounded">STD</span></RouterLink>
             </div>
-            <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
-          </RouterLink>
-          <RouterLink :to="`/app/server/${currentGuildId}/members/compare`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
-            <div class="flex items-center gap-3">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-              Compare
+          </div>
+
+          <!-- RECAP GROUP -->
+          <div>
+            <button @click="toggleGroup('recap')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-navy-800 transition-colors">
+              <div class="flex items-center gap-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Recap
+              </div>
+              <svg class="w-4 h-4 transition-transform" :class="openGroups.recap ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div v-show="openGroups.recap" class="pl-4 pr-1 py-1 space-y-1">
+              <RouterLink :to="`/app/server/${currentGuildId}/war/recap`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">War Classic <span class="text-[8px] bg-purple-100 text-purple-700 px-1 rounded">STD</span></RouterLink>
+              <RouterLink :to="`/app/server/${currentGuildId}/war/recap-cwl`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">CWL <span class="text-[8px] bg-purple-100 text-purple-700 px-1 rounded">STD</span></RouterLink>
             </div>
-            <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
-          </RouterLink>
-          <RouterLink :to="`/app/server/${currentGuildId}/war/recap`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
-            <div class="flex items-center gap-3">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-              Rekap War
+          </div>
+
+          <!-- RAID WEEKEND GROUP -->
+          <div>
+            <button @click="toggleGroup('raid')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-navy-800 transition-colors">
+              <div class="flex items-center gap-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                Raid Weekend
+              </div>
+              <svg class="w-4 h-4 transition-transform" :class="openGroups.raid ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div v-show="openGroups.raid" class="pl-4 pr-1 py-1 space-y-1">
+              <RouterLink :to="`/app/server/${currentGuildId}/capital`" @click="isSidebarOpen = false" class="block px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">Capital Info</RouterLink>
             </div>
-            <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
-          </RouterLink>
-          <RouterLink :to="`/app/server/${currentGuildId}/war/recap-cwl`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
-            <div class="flex items-center gap-3">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-              Rekap CWL
-            </div>
-            <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
-          </RouterLink>
+          </div>
         </template>
         <template v-else>
           <div class="px-3 py-4 text-xs text-center text-gray-500">Pilih server terlebih dahulu.</div>
@@ -168,12 +167,22 @@ const router = useRouter()
 const isSidebarOpen = ref(false)
 const servers = ref([])
 const currentGuildId = ref('')
-
-// 1. Definisikan serverTier sebagai ref biasa
 const serverTier = ref('free')
+
+// State untuk buka-tutup grup menu
+const openGroups = ref({
+  clan: true,
+  war: true,
+  recap: true,
+  raid: true
+})
+
+function toggleGroup(group) {
+  openGroups.value[group] = !openGroups.value[group]
+}
+
 provide('serverTier', serverTier)
 
-// 2. Watch perubahan currentGuildId dan servers untuk update serverTier
 watch([servers, currentGuildId], () => {
   if (!currentGuildId.value) {
     serverTier.value = 'free'
