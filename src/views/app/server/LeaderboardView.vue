@@ -48,7 +48,8 @@ import { apiFetch } from '../../../lib/api'
 import PremiumGate from '../../../components/PremiumGate.vue'
 import SearchInput from '../../../components/ui/SearchInput.vue'
 
-const tier = inject('serverTier', ref('free'))
+const tierRef = inject('serverTier', ref('free'))
+const tier = computed(() => tierRef.value)
 const loading = ref(true)
 const leaderboard = ref([])
 const searchQuery = ref('')

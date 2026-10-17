@@ -124,12 +124,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { ref, onMounted, inject, computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { apiFetch } from '../../../lib/api'
 
 const route = useRoute()
-const tier = inject('serverTier', ref('free'))
+const tierRef = inject('serverTier', ref('free'))
+const tier = computed(() => tierRef.value)
 const loading = ref(true)
 
 const members = ref([])
