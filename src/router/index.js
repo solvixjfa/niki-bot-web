@@ -13,6 +13,8 @@ import CwlView from '../views/app/server/CwlView.vue'
 import DonationsView from '../views/app/server/DonationsView.vue'
 import InactiveView from '../views/app/server/InactiveView.vue'
 import CapitalView from '../views/app/server/CapitalView.vue'
+import LeaderboardView from '../views/app/server/LeaderboardView.vue'
+import RaceWarView from '../views/app/server/RaceWarView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -37,6 +39,8 @@ const router = createRouter({
             { path: 'inactive', name: 'server-inactive', component: InactiveView },
             { path: 'members', name: 'server-members', component: MembersView },
             { path: 'capital', name: 'server-capital', component: CapitalView },
+            { path: 'leaderboard', name: 'server-leaderboard', component: LeaderboardView },
+            { path: 'racewar', name: 'server-racewar', component: RaceWarView },
           ]
         }
       ],
