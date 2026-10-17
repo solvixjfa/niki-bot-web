@@ -5,19 +5,38 @@
       <h2 class="text-xl font-bold text-gray-900 dark:text-white">War Status</h2>
     </div>
 
-    <div v-if="loading" class="animate-pulse text-gray-500 text-sm">Memuat data war dari database...</div>
+    <div v-if="loading" class="animate-pulse text-gray-500 dark:text-gray-400 text-sm">Memuat data war...</div>
     
-    <div v-else-if="!war || war.state === 'notInWar'" class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 text-center">
+    <div v-else-if="!war || war.state === 'notInWar'" class="bg-gray-50 dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-8 text-center">
       <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">Clan ini sedang tidak dalam perang.</p>
-      <p class="text-xs text-gray-400 mt-1">Data diambil dari database sinkronisasi Niki.</p>
     </div>
 
     <div v-else class="space-y-6">
-      <div class="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl p-6 shadow-lg relative overflow-hidden">
-        <div class="text-center mb-6 relative z-10">
-          <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-bold uppercase tracking-wider">{{ war.state }}</span>
+      
+      <!-- Card Live Countdown & Status -->
+      <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="text-center md:text-left">
+          <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Status Perang</p>
+          <span class="px-3 py-1 bg-brand text-white rounded-lg text-sm font-black uppercase tracking-wider">{{ war.state }}</span>
+        </div>
+        
+        <div class="text-center">
+          <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Sisa Waktu</p>
+          <div class="text-2xl font-black text-red-500 font-mono">
+            {{ timeLeft }}
+          </div>
         </div>
 
+        <div class="text-center md:text-right">
+          <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Waktu Selesai</p>
+          <p class="text-sm font-bold text-gray-900 dark:text-white">
+            {{ formatDate(war.end_time) }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Card Skor Perang -->
+      <div class="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl p-6 shadow-lg relative overflow-hidden">
         <div class="flex justify-between items-center relative z-10">
           <div class="text-center flex-1">
             <div class="text-lg font-bold">Clan Kita</div>
@@ -45,21 +64,56 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { apiFetch } from '../../../lib/api'
 import { ASSETS } from '../../../lib/assets'
 
 const loading = ref(true)
 const war = ref(null)
+const now = ref(Date.now())
+let timer = null
+
+// Logic untuk menghitung sisa waktu
+const timeLeft = computed(() => {
+  if (!war.value || !war.value.end_time) return '--:--:--'
+  
+  const end = new Date(war.value.end_time).getTime()
+  const diff = end - now.value
+  
+  if (diff <= 0) return 'WAR BERAKHIR'
+  
+  const hours = Math.floor(diff / (1000 * 60 * 60))
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+  
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+})
+
+function formatDate(isoString) {
+  if (!isoString) return '-'
+  const d = new Date(isoString)
+  return d.toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
+}
 
 onMounted(async () => {
   try {
     const data = await apiFetch('/clan/war')
     war.value = data
+    
+    // Jalankan timer tiap 1 detik kalau war lagi jalan
+    if (data && data.state !== 'notInWar') {
+      timer = setInterval(() => {
+        now.value = Date.now()
+      }, 1000)
+    }
   } catch (err) {
     console.error('Failed to load war:', err)
   } finally {
     loading.value = false
   }
+})
+
+onUnmounted(() => {
+  if (timer) clearInterval(timer)
 })
 </script>
