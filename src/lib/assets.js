@@ -6,6 +6,6 @@ export const ASSETS = {
   darkElixir: 'https://assets.clashk.ing/resources/dark_elixir.png',
   capitalGold: 'https://assets.clashk.ing/resources/capital_gold.png',
   raidMedal: 'https://assets.clashk.ing/resources/raid_medal.png',
-  star: 'https://assets.clashk.ing/resources/star.png',
-  war: 'https://assets.clashk.ing/resources/war.png'
+  star: 'https://api-assets.clashofclans.com/other/war_stars.png',
+  war: 'https://api-assets.clashofclans.com/other/clan_wars.png'
 }
