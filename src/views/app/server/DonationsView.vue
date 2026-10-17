@@ -27,7 +27,10 @@
             {{ index + 1 }}
           </div>
           <div>
-            <h3 class="font-bold text-gray-900">{{ m.name }}</h3>
+            <div class="flex items-center gap-1.5">
+              <img :src="ASSETS.getTh(m.townhall_level)" class="w-5 h-5 object-contain drop-shadow-sm" :alt="'TH ' + m.townhall_level" />
+              <h3 class="font-bold text-gray-900">{{ m.name }}</h3>
+            </div>
             <p class="text-xs text-gray-500">{{ m.role }}</p>
           </div>
         </div>
@@ -43,6 +46,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { apiFetch } from '../../../lib/api'
+import { ASSETS } from '../../../lib/assets'
 
 const loading = ref(true)
 const donors = ref([])
