@@ -64,7 +64,6 @@
         <p class="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 shrink-0">Menu Server</p>
         
         <template v-if="currentGuildId">
-          <!-- FREE MENUS -->
           <RouterLink :to="`/app/server/${currentGuildId}`" @click="isSidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400" exact>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
             Dashboard
@@ -90,7 +89,6 @@
             Donations
           </RouterLink>
           
-          <!-- STANDARD MENUS -->
           <div class="border-t border-gray-100 dark:border-navy-800 my-2 pt-2"></div>
           
           <RouterLink :to="`/app/server/${currentGuildId}/members/leaderboard`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
@@ -100,7 +98,6 @@
             </div>
             <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
           </RouterLink>
-          
           <RouterLink :to="`/app/server/${currentGuildId}/war/race`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
             <div class="flex items-center gap-3">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
@@ -108,7 +105,6 @@
             </div>
             <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
           </RouterLink>
-
           <RouterLink :to="`/app/server/${currentGuildId}/members/compare`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
             <div class="flex items-center gap-3">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
@@ -136,7 +132,7 @@
         </template>
       </div>
       
-      <!-- Footer Sidebar (Settings & Logout) -->
+      <!-- Footer Sidebar -->
       <div class="pt-4 mt-auto border-t border-gray-100 dark:border-navy-800 shrink-0">
         <RouterLink to="/app/settings" @click="isSidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors mb-1" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
@@ -165,21 +161,32 @@ import { useTheme } from '../../composables/useTheme'
 import { apiFetch } from '../../lib/api'
 
 const { logout, user } = useAuth()
-
-function handleLogout() {
-  localStorage.removeItem('niki_servers_cache')
-  logout()
-}
 const { isDark, toggleTheme } = useTheme()
 const route = useRoute()
 const router = useRouter()
 
 const isSidebarOpen = ref(false)
 const servers = ref([])
-const serverTier = ref('free')
 const currentGuildId = ref('')
 
+// 1. Definisikan serverTier sebagai ref biasa
+const serverTier = ref('free')
 provide('serverTier', serverTier)
+
+// 2. Watch perubahan currentGuildId dan servers untuk update serverTier
+watch([servers, currentGuildId], () => {
+  if (!currentGuildId.value) {
+    serverTier.value = 'free'
+    return
+  }
+  const s = servers.value.find(x => x.guild_id === currentGuildId.value)
+  serverTier.value = s ? (s.tier || 'free') : 'free'
+}, { immediate: true, deep: true })
+
+function handleLogout() {
+  localStorage.removeItem('niki_servers_cache')
+  logout()
+}
 
 function handleServerChange() {
   if (currentGuildId.value) {
@@ -193,7 +200,6 @@ watch(() => route.params.guildId, (newId) => {
 }, { immediate: true })
 
 onMounted(async () => {
-  // 1. Baca dari cache dulu biar gak flash 'free'
   const cachedServers = localStorage.getItem('niki_servers_cache')
   if (cachedServers) {
     try {
@@ -204,11 +210,10 @@ onMounted(async () => {
     } catch (e) { console.error('Cache error', e) }
   }
 
-  // 2. Fetch data terbaru dari API
   try {
     const data = await apiFetch('/auth/me')
     servers.value = data?.servers || []
-    localStorage.setItem('niki_servers_cache', JSON.stringify(servers.value)) // Simpan ke cache
+    localStorage.setItem('niki_servers_cache', JSON.stringify(servers.value))
     
     if (route.params.guildId) {
       currentGuildId.value = route.params.guildId

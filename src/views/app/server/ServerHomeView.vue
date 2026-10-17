@@ -129,8 +129,8 @@ import { RouterLink, useRoute } from 'vue-router'
 import { apiFetch } from '../../../lib/api'
 
 const route = useRoute()
-const tierRef = inject('serverTier', ref('free'))
-const tier = computed(() => tierRef.value)
+const injectedTier = inject('serverTier', ref('free'))
+const tier = computed(() => injectedTier.value)
 const loading = ref(true)
 
 const members = ref([])

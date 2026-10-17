@@ -7,8 +7,7 @@
       <div v-else-if="error" class="text-red-500 text-sm py-8 text-center">{{ error }}</div>
       
       <div v-else>
-        <!-- Header & Search -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
           <div>
             <h3 class="font-bold text-gray-900 dark:text-white">Rekap War vs {{ warData.opponent }}</h3>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Status: {{ warData.state }}</p>
@@ -68,13 +67,14 @@ import { ASSETS } from '../../../lib/assets'
 import PremiumGate from '../../../components/PremiumGate.vue'
 import SearchInput from '../../../components/ui/SearchInput.vue'
 
-const tier = inject('serverTier', ref('free'))
+const injectedTier = inject('serverTier', ref('free'))
+const tier = computed(() => injectedTier.value)
+
 const loading = ref(true)
 const error = ref('')
 const warData = ref({ opponent: '', state: '', data: [] })
 const searchQuery = ref('')
 
-// Filter data berdasarkan pencarian
 const filteredData = computed(() => {
   if (!searchQuery.value) return warData.value.data
   return warData.value.data.filter(r => 
