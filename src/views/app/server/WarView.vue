@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-6">
     <div class="flex items-center gap-3 mb-4">
-      <img src="/assets/coc/war.png" class="w-8 h-8 object-contain" alt="War" />
+      <IconWar className="w-6 h-6 text-gray-700" />
       <h2 class="text-xl font-bold text-gray-900">War Status</h2>
     </div>
 
@@ -13,12 +13,7 @@
     </div>
 
     <div v-else class="space-y-6">
-      <!-- Card War -->
       <div class="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl p-6 shadow-lg relative overflow-hidden">
-        <div class="absolute top-0 right-0 p-4 opacity-10">
-          <img src="/assets/coc/war.png" class="w-32 h-32" />
-        </div>
-        
         <div class="text-center mb-6 relative z-10">
           <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-bold uppercase tracking-wider">{{ war.state }}</span>
         </div>
@@ -26,22 +21,22 @@
         <div class="flex justify-between items-center relative z-10">
           <div class="text-center flex-1">
             <div class="text-lg font-bold">Clan Kita</div>
-            <div class="flex items-center justify-center gap-1 my-2">
-              <img src="/assets/coc/star.png" class="w-5 h-5" />
-              <span class="text-2xl font-black">{{ war.clan_stars }}</span>
+            <div class="flex items-center justify-center gap-1.5 my-2">
+              <IconStar className="w-6 h-6 text-yellow-400 drop-shadow-md" />
+              <span class="text-3xl font-black">{{ war.clan_stars }}</span>
             </div>
-            <div class="text-sm text-gray-300">{{ war.clan_destruction }}%</div>
+            <div class="text-sm text-gray-300 font-medium">{{ war.clan_destruction }}%</div>
           </div>
           
-          <div class="text-2xl font-black italic px-4 opacity-50">VS</div>
+          <div class="text-3xl font-black italic px-4 opacity-30">VS</div>
           
           <div class="text-center flex-1">
             <div class="text-lg font-bold">{{ war.opponent_name }}</div>
-            <div class="flex items-center justify-center gap-1 my-2">
-              <img src="/assets/coc/star.png" class="w-5 h-5" />
-              <span class="text-2xl font-black">{{ war.opp_stars }}</span>
+            <div class="flex items-center justify-center gap-1.5 my-2">
+              <IconStar className="w-6 h-6 text-yellow-400 drop-shadow-md" />
+              <span class="text-3xl font-black">{{ war.opp_stars }}</span>
             </div>
-            <div class="text-sm text-gray-300">{{ war.opp_destruction }}%</div>
+            <div class="text-sm text-gray-300 font-medium">{{ war.opp_destruction }}%</div>
           </div>
         </div>
       </div>
@@ -52,6 +47,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { apiFetch } from '../../../lib/api'
+import IconWar from '../../../components/icons/IconWar.vue'
+import IconStar from '../../../components/icons/IconStar.vue'
 
 const loading = ref(true)
 const war = ref(null)

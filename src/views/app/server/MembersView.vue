@@ -25,7 +25,12 @@
           <tr v-for="m in members" :key="m.tag" class="border-b border-gray-100 hover:bg-gray-50">
             <td class="px-4 py-3 font-medium text-gray-900">{{ m.name }}</td>
             <td class="px-4 py-3 text-gray-500">{{ m.role }}</td>
-            <td class="px-4 py-3 text-center font-bold">{{ m.townhall_level }}</td>
+            <td class="px-4 py-3 text-center">
+              <div class="flex items-center justify-center gap-1">
+                <img :src="ASSETS.getTh(m.townhall_level)" class="w-6 h-6 object-contain" :alt="'TH ' + m.townhall_level" />
+                <span class="font-bold text-gray-700">{{ m.townhall_level }}</span>
+              </div>
+            </td>
             <td class="px-4 py-3 text-right text-green-600 font-medium">{{ m.donations }}</td>
           </tr>
         </tbody>
@@ -37,6 +42,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { apiFetch } from '../../../lib/api'
+import { ASSETS } from '../../../lib/assets'
 
 const loading = ref(true)
 const members = ref([])
