@@ -6,6 +6,8 @@ import DashboardLayout from '../views/app/DashboardLayout.vue'
 import HomeView from '../views/app/HomeView.vue'
 import ServerLayout from '../views/app/server/ServerLayout.vue'
 import ServerHomeView from '../views/app/server/ServerHomeView.vue'
+import WarView from '../views/app/server/WarView.vue'
+import MembersView from '../views/app/server/MembersView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -23,7 +25,8 @@ const router = createRouter({
           component: ServerLayout,
           children: [
             { path: '', name: 'server-home', component: ServerHomeView },
-            // Nanti tambahkan rute /war, /members, dll di sini
+            { path: 'war', name: 'server-war', component: WarView },
+            { path: 'members', name: 'server-members', component: MembersView },
           ]
         }
       ],

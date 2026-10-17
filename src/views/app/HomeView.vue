@@ -23,8 +23,8 @@
         <div class="flex justify-between items-start mb-4">
           <div class="flex items-center gap-3">
             <!-- Ganti icon # dengan gambar badge asli nanti -->
-            <div class="w-12 h-12 bg-purple-50 text-brand rounded-xl flex items-center justify-center font-bold text-xl border border-purple-100">
-              #
+            <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center border border-purple-100 overflow-hidden">
+              <img :src="ASSETS.war" class="w-8 h-8 object-contain" alt="Clan" />
             </div>
             <div>
               <h3 class="font-bold text-gray-900 text-base">{{ server.clan_tag }}</h3>
@@ -56,6 +56,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { apiFetch } from '../../lib/api'
+import { ASSETS } from '../../lib/assets'
 
 const router = useRouter()
 const loading = ref(true)
