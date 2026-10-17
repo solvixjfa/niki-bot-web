@@ -123,6 +123,13 @@
             </div>
             <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
           </RouterLink>
+          <RouterLink :to="`/app/server/${currentGuildId}/war/recap-cwl`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
+            <div class="flex items-center gap-3">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              Rekap CWL
+            </div>
+            <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
+          </RouterLink>
         </template>
         <template v-else>
           <div class="px-3 py-4 text-xs text-center text-gray-500">Pilih server terlebih dahulu.</div>
@@ -137,7 +144,7 @@
         </RouterLink>
         
         <p v-if="user" class="text-xs text-gray-500 dark:text-gray-400 mb-2 truncate px-3 mt-2">@{{ user.username }}</p>
-        <button @click="logout" class="text-xs text-red-500 hover:text-red-700 dark:hover:text-red-400 text-left px-3 py-2 font-medium w-full flex items-center gap-2">
+        <button @click="handleLogout" class="text-xs text-red-500 hover:text-red-700 dark:hover:text-red-400 text-left px-3 py-2 font-medium w-full flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
           Sign out
         </button>
@@ -158,6 +165,11 @@ import { useTheme } from '../../composables/useTheme'
 import { apiFetch } from '../../lib/api'
 
 const { logout, user } = useAuth()
+
+function handleLogout() {
+  localStorage.removeItem('niki_servers_cache')
+  logout()
+}
 const { isDark, toggleTheme } = useTheme()
 const route = useRoute()
 const router = useRouter()
@@ -177,28 +189,30 @@ function handleServerChange() {
 }
 
 watch(() => route.params.guildId, (newId) => {
-  if (newId) {
-    currentGuildId.value = newId
-    const s = servers.value.find(x => x.guild_id === newId)
-    if (s) serverTier.value = s.tier || 'free'
-  } else {
-    const saved = localStorage.getItem('niki_active_guild')
-    if (saved && servers.value.find(x => x.guild_id === saved)) {
-      currentGuildId.value = saved
-    } else if (servers.value.length > 0) {
-      currentGuildId.value = servers.value[0].guild_id
-    }
-  }
+  if (newId) currentGuildId.value = newId
 }, { immediate: true })
 
 onMounted(async () => {
+  // 1. Baca dari cache dulu biar gak flash 'free'
+  const cachedServers = localStorage.getItem('niki_servers_cache')
+  if (cachedServers) {
+    try {
+      servers.value = JSON.parse(cachedServers)
+      if (!route.params.guildId && !currentGuildId.value && servers.value.length > 0) {
+        currentGuildId.value = servers.value[0].guild_id
+      }
+    } catch (e) { console.error('Cache error', e) }
+  }
+
+  // 2. Fetch data terbaru dari API
   try {
     const data = await apiFetch('/auth/me')
     servers.value = data?.servers || []
+    localStorage.setItem('niki_servers_cache', JSON.stringify(servers.value)) // Simpan ke cache
+    
     if (route.params.guildId) {
       currentGuildId.value = route.params.guildId
-    } else if (currentGuildId.value) {
-    } else if (servers.value.length > 0) {
+    } else if (!currentGuildId.value && servers.value.length > 0) {
       currentGuildId.value = servers.value[0].guild_id
     }
   } catch (err) {

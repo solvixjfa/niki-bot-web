@@ -15,6 +15,7 @@ import WarView from '../views/app/server/WarView.vue'
 import CwlView from '../views/app/server/CwlView.vue'
 import RaceWarView from '../views/app/server/RaceWarView.vue'
 import RecapWarView from '../views/app/server/RecapWarView.vue'
+import RecapCwlView from '../views/app/server/RecapCwlView.vue'
 
 // Members Group
 import MembersLayout from '../views/app/server/MembersLayout.vue'
@@ -55,6 +56,7 @@ const router = createRouter({
                 { path: 'cwl', name: 'server-cwl', component: CwlView },
                 { path: 'race', name: 'server-racewar', component: RaceWarView },
                 { path: 'recap', name: 'server-recapwar', component: RecapWarView },
+                { path: 'recap-cwl', name: 'server-recacpwl', component: RecapCwlView },
               ]
             },
 

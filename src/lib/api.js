@@ -35,8 +35,10 @@ export async function apiFetch(path, options = {}) {
   const res = await fetch(`${API_URL}${path}`, { ...options, headers })
   
   if (res.status === 401) {
+    // Cuma hapus token kalau beneran 401 dari backend (bukan network error)
     localStorage.removeItem('niki_token')
     localStorage.removeItem('niki_user')
+    localStorage.removeItem('niki_servers_cache')
     localStorage.removeItem('niki_active_guild')
     window.location.href = '/'
     throw new Error('Unauthorized')
