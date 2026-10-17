@@ -8,6 +8,7 @@ import ServerLayout from '../views/app/server/ServerLayout.vue'
 import ServerHomeView from '../views/app/server/ServerHomeView.vue'
 import WarView from '../views/app/server/WarView.vue'
 import MembersView from '../views/app/server/MembersView.vue'
+import CwlView from '../views/app/server/CwlView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,6 +28,7 @@ const router = createRouter({
             { path: '', name: 'server-home', component: ServerHomeView },
             { path: 'war', name: 'server-war', component: WarView },
             { path: 'members', name: 'server-members', component: MembersView },
+            { path: 'cwl', name: 'server-cwl', component: CwlView },
           ]
         }
       ],
