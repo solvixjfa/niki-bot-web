@@ -9,20 +9,20 @@
 
     <div v-if="loading" class="animate-pulse text-gray-500 dark:text-gray-400 text-sm">Memuat data CWL dari database...</div>
     
-    <div v-else-if="wars.length === 0" class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 text-center">
+    <div v-else-if="wars.length === 0" class="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl p-8 text-center">
       <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">Belum ada riwayat CWL.</p>
       <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">Data akan muncul setelah bot sinkronisasi perang CWL.</p>
     </div>
 
     <div v-else class="grid grid-cols-1 gap-3">
-      <div v-for="w in wars" :key="w.id" class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between shadow-sm gap-4">
+      <div v-for="w in wars" :key="w.id" class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between shadow-sm gap-4">
         <div class="flex-1">
           <div class="flex items-center gap-2 mb-1">
             <span class="px-2 py-0.5 text-[10px] font-bold uppercase rounded" 
               :class="{
                 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400': w.result === 'win',
                 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400': w.result === 'lose',
-                'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300': w.result === 'tie' || !w.result
+                'bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300': w.result === 'tie' || !w.result
               }"
             >
               {{ w.result || w.state }}
@@ -32,7 +32,7 @@
           <p class="text-xs text-gray-500 dark:text-gray-400">{{ w.opponent_tag }}</p>
         </div>
 
-        <div class="flex items-center gap-4 sm:gap-6 bg-gray-50 dark:bg-gray-800 px-4 py-2 rounded-lg">
+        <div class="flex items-center gap-4 sm:gap-6 bg-gray-50 dark:bg-zinc-800 px-4 py-2 rounded-lg">
           <div class="text-center">
             <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Kita</div>
             <div class="flex items-center justify-center gap-1 text-sm font-bold text-gray-900 dark:text-white">

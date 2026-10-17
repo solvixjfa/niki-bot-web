@@ -9,19 +9,19 @@
 
     <div v-if="loading" class="animate-pulse text-gray-500 dark:text-gray-400 text-sm">Memuat data...</div>
     
-    <div v-else-if="donors.length === 0" class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 text-center">
+    <div v-else-if="donors.length === 0" class="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl p-8 text-center">
       <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">Belum ada data donasi.</p>
     </div>
 
     <div v-else class="space-y-3">
-      <div v-for="(m, index) in donors" :key="m.tag" class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
+      <div v-for="(m, index) in donors" :key="m.tag" class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-4">
           <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-lg" 
             :class="{
               'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400': index === 0,
               'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300': index === 1,
               'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400': index === 2,
-              'bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500': index > 2
+              'bg-gray-50 dark:bg-zinc-800 text-gray-400 dark:text-gray-500': index > 2
             }"
           >
             {{ index + 1 }}
