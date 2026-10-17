@@ -116,10 +116,27 @@
             <h3 class="font-bold text-gray-900 dark:text-white">Rekap Partisipasi Raid</h3>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Cek siapa yang belum menyerang minggu ini.</p>
           </div>
-          <button @click="downloadCSV" class="px-4 py-2 bg-brand hover:bg-brand-dark text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-2">
+          <button @click="downloadCSV" class="px-4 py-2 bg-brand hover:bg-brand-dark text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-2 shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
             Download CSV
           </button>
+        </div>
+
+        <!-- TOOLBAR SEARCH & FILTER -->
+        <div class="flex flex-col sm:flex-row gap-3 mb-4">
+          <div class="relative flex-1">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input v-model="searchQuery" type="text" placeholder="Cari nama member..." class="w-full pl-9 pr-3 py-2 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand outline-none transition-all">
+          </div>
+          
+          <div class="flex gap-1 overflow-x-auto hide-scrollbar">
+            <button @click="filterStatus = 'all'" :class="filterStatus === 'all' ? 'bg-brand text-white border-brand' : 'bg-white dark:bg-zinc-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-zinc-700'" class="px-3 py-2 text-xs font-semibold rounded-lg border transition-colors whitespace-nowrap">Semua</button>
+            <button @click="filterStatus = 'Belum Attack'" :class="filterStatus === 'Belum Attack' ? 'bg-red-500 text-white border-red-500' : 'bg-white dark:bg-zinc-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-zinc-700'" class="px-3 py-2 text-xs font-semibold rounded-lg border transition-colors whitespace-nowrap">Belum</button>
+            <button @click="filterStatus = 'Sudah Attack'" :class="filterStatus === 'Sudah Attack' ? 'bg-yellow-500 text-white border-yellow-500' : 'bg-white dark:bg-zinc-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-zinc-700'" class="px-3 py-2 text-xs font-semibold rounded-lg border transition-colors whitespace-nowrap">Sudah</button>
+            <button @click="filterStatus = 'Max Attack'" :class="filterStatus === 'Max Attack' ? 'bg-green-500 text-white border-green-500' : 'bg-white dark:bg-zinc-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-zinc-700'" class="px-3 py-2 text-xs font-semibold rounded-lg border transition-colors whitespace-nowrap">Max</button>
+          </div>
         </div>
         
         <div class="overflow-x-auto">
@@ -133,7 +150,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(r, i) in raidStats" :key="i" class="border-b border-gray-100 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-800/50">
+              <tr v-if="filteredRaidStats.length === 0">
+                <td colspan="4" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">Tidak ada member yang cocok dengan pencarian.</td>
+              </tr>
+              <tr v-for="(r, i) in filteredRaidStats" :key="i" class="border-b border-gray-100 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-800/50">
                 <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ r.name }}</td>
                 <td class="px-4 py-3 text-center">
                   <span class="px-2 py-0.5 text-[10px] font-bold uppercase rounded" 
@@ -159,17 +179,27 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { apiFetch } from '../../../lib/api'
 import { ASSETS } from '../../../lib/assets'
 import IconCapitalGold from '../../../components/icons/IconCapitalGold.vue'
 import IconWar from '../../../components/icons/IconWar.vue'
 
 const loading = ref(true)
-const activeTab = ref('summary') // Default tab yang kebuka
+const activeTab = ref('summary')
+const searchQuery = ref('')
+const filterStatus = ref('all') // Default tab yang kebuka
 const capitalData = ref(null)
 const donations = ref([])
 const raidStats = ref([])
+
+const filteredRaidStats = computed(() => {
+  return raidStats.value.filter(r => {
+    const matchSearch = r.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+    const matchStatus = filterStatus.value === 'all' || r.status === filterStatus.value
+    return matchSearch && matchStatus
+  })
+})
 
 onMounted(async () => {
   try {

@@ -4,6 +4,7 @@ import LandingView from '../views/landing/LandingView.vue'
 import CallbackView from '../views/auth/CallbackView.vue'
 import DashboardLayout from '../views/app/DashboardLayout.vue'
 import HomeView from '../views/app/HomeView.vue'
+import AccountView from '../views/app/AccountView.vue'
 import ServerLayout from '../views/app/server/ServerLayout.vue'
 import ServerHomeView from '../views/app/server/ServerHomeView.vue'
 import WarView from '../views/app/server/WarView.vue'
@@ -24,6 +25,7 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         { path: '', name: 'app-home', component: HomeView },
+        { path: 'account', name: 'app-account', component: AccountView },
         {
           path: 'server/:guildId',
           component: ServerLayout,
