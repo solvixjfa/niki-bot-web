@@ -55,7 +55,7 @@
         <div>
           <div class="flex items-center justify-between mb-3">
             <div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded-lg flex items-center justify-center">
-              <img :src="ASSETS.capitalGold" class="w-6 h-6 object-contain" alt="Gold" />
+              <IconCapitalGold className="w-6 h-6" />
             </div>
           </div>
           <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">Raid Weekend Terakhir</h3>
@@ -129,6 +129,8 @@ import { ref, onMounted, inject } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { apiFetch } from '../../../lib/api'
 import { ASSETS } from '../../../lib/assets'
+import IconCapitalGold from '../../../components/icons/IconCapitalGold.vue'
+import IconStar from '../../../components/icons/IconStar.vue'
 
 const route = useRoute()
 const tier = inject('serverTier', 'free')

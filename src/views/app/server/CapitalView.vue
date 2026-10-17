@@ -1,13 +1,13 @@
 <template>
   <div class="space-y-6">
     <div class="flex items-center gap-3 mb-4">
-      <img :src="ASSETS.capitalGold" class="w-8 h-8 object-contain" alt="Capital" />
+      <IconCapitalGold className="w-8 h-8" />
       <h2 class="text-xl font-bold text-gray-900 dark:text-white">Clan Capital Raid Weekend</h2>
     </div>
 
     <div v-if="loading" class="animate-pulse text-gray-500 dark:text-gray-400 text-sm">Memuat data Capital...</div>
     
-    <div v-else-if="!capitalData || capitalData.error" class="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl p-8 text-center">
+    <div v-else-if="!capitalData || capitalData.error" class="bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-8 text-center">
       <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">{{ capitalData?.error || 'Belum ada data Raid Weekend.' }}</p>
     </div>
 
@@ -18,11 +18,11 @@
         
         <div class="space-y-3 text-sm">
           <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2">
-            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2"><img :src="ASSETS.capitalGold" class="w-4 h-4" /> Total Loot</span>
+            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2"><IconCapitalGold className="w-4 h-4" /> Total Loot</span>
             <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.total_loot?.toLocaleString() }} Gold</span>
           </div>
           <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2">
-            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2"><img :src="ASSETS.war" class="w-4 h-4" /> Total Attack</span>
+            <span class="text-gray-500 dark:text-gray-400 flex items-center gap-2"><IconWar className="w-4 h-4 text-gray-600 dark:text-gray-400" /> Total Attack</span>
             <span class="font-bold text-gray-900 dark:text-white">{{ capitalData.total_attacks }} Serangan</span>
           </div>
           <div class="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-2">
@@ -66,7 +66,7 @@
                 </td>
                 <td class="px-4 py-3 text-right font-bold text-yellow-600 dark:text-yellow-500">
                   <div class="flex items-center justify-end gap-1">
-                    <img :src="ASSETS.capitalGold" class="w-4 h-4 object-contain" />
+                    <IconCapitalGold className="w-4 h-4" />
                     {{ d.contributions.toLocaleString() }}
                   </div>
                 </td>
@@ -83,6 +83,8 @@
 import { ref, onMounted } from 'vue'
 import { apiFetch } from '../../../lib/api'
 import { ASSETS } from '../../../lib/assets'
+import IconCapitalGold from '../../../components/icons/IconCapitalGold.vue'
+import IconWar from '../../../components/icons/IconWar.vue'
 
 const loading = ref(true)
 const capitalData = ref(null)
