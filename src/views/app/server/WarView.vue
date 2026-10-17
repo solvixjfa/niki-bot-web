@@ -77,7 +77,13 @@ let timer = null
 const timeLeft = computed(() => {
   if (!war.value || !war.value.end_time) return '--:--:--'
   
-  const end = new Date(war.value.end_time).getTime()
+  // Paksa string dianggap UTC kalau gak ada penanda timezone
+  let endStr = war.value.end_time
+  if (!endStr.endsWith('Z') && !endStr.includes('+')) {
+    endStr += 'Z'
+  }
+  
+  const end = new Date(endStr).getTime()
   const diff = end - now.value
   
   if (diff <= 0) return 'WAR BERAKHIR'
@@ -91,7 +97,12 @@ const timeLeft = computed(() => {
 
 function formatDate(isoString) {
   if (!isoString) return '-'
-  const d = new Date(isoString)
+  // Paksa string dianggap UTC kalau gak ada penanda timezone
+  let iso = isoString
+  if (!iso.endsWith('Z') && !iso.includes('+')) {
+    iso += 'Z'
+  }
+  const d = new Date(iso)
   return d.toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
 }
 
