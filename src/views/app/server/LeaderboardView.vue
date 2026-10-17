@@ -10,36 +10,53 @@
       </div>
 
       <div v-if="loading" class="animate-pulse text-gray-500">Memuat data...</div>
-      <div v-else class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
-        <table class="w-full text-sm text-left">
-          <thead class="text-xs text-gray-500 dark:text-gray-400 uppercase bg-gray-50 dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700">
-            <tr>
-              <th class="px-4 py-3">Rank</th>
-              <th class="px-4 py-3">Nama Member</th>
-              <th class="px-4 py-3 text-right">Total Donasi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(d, i) in leaderboard" :key="i" class="border-b border-gray-100 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-800/50">
-              <td class="px-4 py-3 font-bold" :class="i === 0 ? 'text-yellow-500' : i === 1 ? 'text-gray-400' : i === 2 ? 'text-orange-400' : 'text-gray-500'">#{{ i + 1 }}</td>
-              <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ d.name }}</td>
-              <td class="px-4 py-3 text-right text-green-600 dark:text-green-400 font-bold">{{ d.score.toLocaleString() }}</td>
-            </tr>
-          </tbody>
-        </table>
+      
+      <div v-else>
+        <div class="mb-4">
+          <SearchInput v-model="searchQuery" placeholder="Cari nama member..." />
+        </div>
+
+        <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+          <table class="w-full text-sm text-left">
+            <thead class="text-xs text-gray-500 dark:text-gray-400 uppercase bg-gray-50 dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700">
+              <tr>
+                <th class="px-4 py-3">Rank</th>
+                <th class="px-4 py-3">Nama Member</th>
+                <th class="px-4 py-3 text-right">Total Donasi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="filteredLeaderboard.length === 0">
+                <td colspan="3" class="px-4 py-8 text-center text-gray-500">Member tidak ditemukan.</td>
+              </tr>
+              <tr v-for="(d, i) in filteredLeaderboard" :key="i" class="border-b border-gray-100 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-800/50">
+                <td class="px-4 py-3 font-bold" :class="i === 0 ? 'text-yellow-500' : i === 1 ? 'text-gray-400' : i === 2 ? 'text-orange-400' : 'text-gray-500'">#{{ i + 1 }}</td>
+                <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ d.name }}</td>
+                <td class="px-4 py-3 text-right text-green-600 dark:text-green-400 font-bold">{{ d.score.toLocaleString() }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { ref, computed, onMounted, inject } from 'vue'
 import { apiFetch } from '../../../lib/api'
 import PremiumGate from '../../../components/PremiumGate.vue'
+import SearchInput from '../../../components/ui/SearchInput.vue'
 
 const tier = inject('serverTier', ref('free'))
 const loading = ref(true)
 const leaderboard = ref([])
+const searchQuery = ref('')
+
+const filteredLeaderboard = computed(() => {
+  if (!searchQuery.value) return leaderboard.value
+  return leaderboard.value.filter(d => d.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
+})
 
 onMounted(async () => {
   if (tier.value === 'free') { loading.value = false; return }

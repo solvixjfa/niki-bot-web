@@ -11,58 +11,81 @@
 
       <div v-if="loading" class="animate-pulse text-gray-500">Memuat data...</div>
       <div v-else-if="error" class="text-red-500 text-sm">{{ error }}</div>
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        
-        <!-- Offense -->
-        <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
-          <div class="p-4 border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50">
-            <h3 class="font-bold text-gray-900 dark:text-white">Klasemen Offense</h3>
-          </div>
-          <table class="w-full text-sm text-left">
-            <tbody>
-              <tr v-for="(o, i) in data.offense" :key="i" class="border-b border-gray-100 dark:border-zinc-800">
-                <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ o.name }}</td>
-                <td class="px-4 py-3 text-right">
-                  <span class="text-xs text-gray-500 block">{{ o.atk_used }}/{{ o.atk_max }} Atk</span>
-                  <span class="text-yellow-500 font-bold">{{ o.stars }}★ ({{ o.destruction }}%)</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      
+      <div v-else>
+        <div class="mb-4">
+          <SearchInput v-model="searchQuery" placeholder="Cari nama member..." />
         </div>
 
-        <!-- Defense -->
-        <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
-          <div class="p-4 border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50">
-            <h3 class="font-bold text-gray-900 dark:text-white">Klasemen Defense</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Offense -->
+          <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+            <div class="p-4 border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50">
+              <h3 class="font-bold text-gray-900 dark:text-white">Klasemen Offense</h3>
+            </div>
+            <table class="w-full text-sm text-left">
+              <tbody>
+                <tr v-if="filteredOffense.length === 0">
+                  <td class="px-4 py-8 text-center text-gray-500">Tidak ada data.</td>
+                </tr>
+                <tr v-for="(o, i) in filteredOffense" :key="i" class="border-b border-gray-100 dark:border-zinc-800">
+                  <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ o.name }}</td>
+                  <td class="px-4 py-3 text-right">
+                    <span class="text-xs text-gray-500 block">{{ o.atk_used }}/{{ o.atk_max }} Atk</span>
+                    <span class="text-yellow-500 font-bold">{{ o.stars }}★ ({{ o.destruction }}%)</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <table class="w-full text-sm text-left">
-            <tbody>
-              <tr v-for="(d, i) in data.defense" :key="i" class="border-b border-gray-100 dark:border-zinc-800">
-                <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ d.name }}</td>
-                <td class="px-4 py-3 text-right">
-                  <span class="text-xs text-gray-500 block">Diserang: {{ d.defended_count }}x</span>
-                  <span class="text-red-500 font-bold">{{ d.stars_given }}★ ({{ d.destruction_given }}%)</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
 
+          <!-- Defense -->
+          <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+            <div class="p-4 border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50">
+              <h3 class="font-bold text-gray-900 dark:text-white">Klasemen Defense</h3>
+            </div>
+            <table class="w-full text-sm text-left">
+              <tbody>
+                <tr v-if="filteredDefense.length === 0">
+                  <td class="px-4 py-8 text-center text-gray-500">Tidak ada data.</td>
+                </tr>
+                <tr v-for="(d, i) in filteredDefense" :key="i" class="border-b border-gray-100 dark:border-zinc-800">
+                  <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ d.name }}</td>
+                  <td class="px-4 py-3 text-right">
+                    <span class="text-xs text-gray-500 block">Diserang: {{ d.defended_count }}x</span>
+                    <span class="text-red-500 font-bold">{{ d.stars_given }}★ ({{ d.destruction_given }}%)</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { ref, computed, onMounted, inject } from 'vue'
 import { apiFetch } from '../../../lib/api'
 import PremiumGate from '../../../components/PremiumGate.vue'
+import SearchInput from '../../../components/ui/SearchInput.vue'
 
 const tier = inject('serverTier', ref('free'))
 const loading = ref(true)
 const error = ref('')
 const data = ref({ offense: [], defense: [] })
+const searchQuery = ref('')
+
+const filteredOffense = computed(() => {
+  if (!searchQuery.value) return data.value.offense
+  return data.value.offense.filter(o => o.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
+})
+
+const filteredDefense = computed(() => {
+  if (!searchQuery.value) return data.value.defense
+  return data.value.defense.filter(d => d.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
+})
 
 onMounted(async () => {
   if (tier.value === 'free') { loading.value = false; return }
