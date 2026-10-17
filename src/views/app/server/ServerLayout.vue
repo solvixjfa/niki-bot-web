@@ -5,7 +5,6 @@
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
       </RouterLink>
       
-      <!-- LOGO & NAMA CLAN -->
       <div class="flex items-center gap-3">
         <div v-if="badgeUrl" class="w-10 h-10 rounded-lg overflow-hidden border border-gray-200 shrink-0">
           <img :src="badgeUrl" class="w-full h-full object-cover" alt="Clan Badge" />
@@ -25,6 +24,7 @@
         <RouterLink :to="`/app/server/${guildId}/donations`" active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Donations</RouterLink>
         <RouterLink :to="`/app/server/${guildId}/inactive`" active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Inactive</RouterLink>
         <RouterLink :to="`/app/server/${guildId}/members`" active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Members</RouterLink>
+        <RouterLink :to="`/app/server/${guildId}/capital`" active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Capital</RouterLink>
       </nav>
 
       <div class="flex-1 bg-white border border-gray-200 rounded-2xl p-4 md:p-6 min-h-[400px] shadow-sm">

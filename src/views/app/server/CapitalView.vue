@@ -12,7 +12,6 @@
     </div>
 
     <div v-else class="space-y-4">
-      <!-- Card Capital Info -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm flex items-center justify-between">
           <div>
@@ -20,7 +19,6 @@
             <h3 class="text-2xl font-black text-gray-900">{{ data.capital_hall }}</h3>
           </div>
           <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center border border-gray-100">
-            <!-- Placeholder gambar Townhall -->
             <img :src="ASSETS.getTh(10)" class="w-8 h-8 object-contain drop-shadow-sm" /> 
           </div>
         </div>
@@ -36,7 +34,6 @@
         </div>
       </div>
 
-      <!-- Card Raid Stats -->
       <div class="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl p-6 shadow-lg">
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center gap-2">
@@ -58,7 +55,6 @@
         </div>
       </div>
 
-      <!-- Card Top Donors -->
       <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
         <div class="flex items-center gap-2 mb-4">
           <img :src="ASSETS.capitalGold" class="w-5 h-5 object-contain" alt="Gold" />

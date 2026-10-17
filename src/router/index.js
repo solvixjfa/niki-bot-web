@@ -11,6 +11,7 @@ import MembersView from '../views/app/server/MembersView.vue'
 import CwlView from '../views/app/server/CwlView.vue'
 import DonationsView from '../views/app/server/DonationsView.vue'
 import InactiveView from '../views/app/server/InactiveView.vue'
+import CapitalView from '../views/app/server/CapitalView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -29,10 +30,11 @@ const router = createRouter({
           children: [
             { path: '', name: 'server-home', component: ServerHomeView },
             { path: 'war', name: 'server-war', component: WarView },
-            { path: 'members', name: 'server-members', component: MembersView },
             { path: 'cwl', name: 'server-cwl', component: CwlView },
             { path: 'donations', name: 'server-donations', component: DonationsView },
             { path: 'inactive', name: 'server-inactive', component: InactiveView },
+            { path: 'members', name: 'server-members', component: MembersView },
+            { path: 'capital', name: 'server-capital', component: CapitalView },
           ]
         }
       ],
