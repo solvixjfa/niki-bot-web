@@ -1,20 +1,25 @@
 <template>
   <div>
-    <div class="mb-6 border-b border-gray-200 pb-4">
-      <RouterLink to="/app" class="text-xs font-bold text-gray-500 hover:text-brand mb-2 inline-block">&larr; Kembali ke Daftar Server</RouterLink>
-      <h1 class="text-2xl font-bold text-gray-900">Clan: {{ serverClanTag }}</h1>
+    <div class="mb-4 md:mb-6 border-b border-gray-200 pb-4 flex items-center gap-3">
+      <RouterLink to="/app" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-600 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+      </RouterLink>
+      <div>
+        <p class="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Server</p>
+        <h1 class="text-xl md:text-2xl font-bold text-gray-900 leading-tight">Clan: {{ serverClanTag }}</h1>
+      </div>
     </div>
     
-    <div class="flex flex-col md:flex-row gap-6">
-      <!-- Menu Fitur -->
-      <nav class="w-full md:w-48 flex flex-col gap-1 shrink-0">
-        <RouterLink :to="`/app/server/${guildId}`" exact-active-class="bg-purple-50 text-brand font-bold" class="px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-colors">Overview</RouterLink>
-        <RouterLink :to="`/app/server/${guildId}/war`" active-class="bg-purple-50 text-brand font-bold" class="px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-colors">War Status</RouterLink>
-        <RouterLink :to="`/app/server/${guildId}/members`" active-class="bg-purple-50 text-brand font-bold" class="px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-colors">Members</RouterLink>
+    <div class="flex flex-col md:flex-row gap-4 md:gap-6">
+      <!-- Menu Fitur (Horizontal Scroll di Mobile) -->
+      <nav class="w-full md:w-48 flex flex-row md:flex-col gap-2 shrink-0 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
+        <RouterLink :to="`/app/server/${guildId}`" exact-active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Overview</RouterLink>
+        <RouterLink :to="`/app/server/${guildId}/war`" active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">War Status</RouterLink>
+        <RouterLink :to="`/app/server/${guildId}/members`" active-class="bg-brand text-white border-brand" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Members</RouterLink>
       </nav>
 
       <!-- Konten -->
-      <div class="flex-1 bg-white border border-gray-200 rounded-2xl p-6 min-h-[500px]">
+      <div class="flex-1 bg-white border border-gray-200 rounded-2xl p-4 md:p-6 min-h-[400px] shadow-sm">
         <RouterView />
       </div>
     </div>
@@ -32,7 +37,6 @@ const serverClanTag = ref('Loading...')
 
 onMounted(async () => {
   try {
-    // Kita bisa ambil detail server dari state, atau endpoint. Untuk sekarang, filter dari /auth/me
     const data = await apiFetch('/auth/me')
     const thisServer = data.servers.find(s => s.guild_id === guildId)
     if (thisServer) {
@@ -46,3 +50,8 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style scoped>
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
