@@ -18,7 +18,6 @@
       </div>
     </div>
 
-    <!-- Overlay Mobile -->
     <div v-if="isSidebarOpen" @click="isSidebarOpen = false" class="md:hidden fixed inset-0 bg-black/50 z-40"></div>
 
     <!-- SIDEBAR UTAMA (Sticky) -->
@@ -41,7 +40,6 @@
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
       </button>
 
-      <!-- Menu Container -->
       <div class="flex-1 flex flex-col mt-8 md:mt-0">
         <!-- MENU GLOBAL -->
         <p class="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 mt-2 shrink-0">Menu Utama</p>
@@ -54,7 +52,7 @@
           Account
         </RouterLink>
 
-        <!-- MENU SERVER (Hanya muncul kalau lagi di dalam server) -->
+        <!-- JIKA DI DALAM SERVER: Tampilkan Menu Server -->
         <div v-if="activeServer" class="mt-6 border-t border-gray-100 dark:border-navy-800 pt-4 flex-1">
           <p class="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 truncate">Server: {{ activeServer.clan_tag }}</p>
           
@@ -98,6 +96,25 @@
               Race War
             </div>
             <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">STD</span>
+          </RouterLink>
+        </div>
+
+        <!-- JIKA DI LUAR SERVER: Tampilkan Daftar Server -->
+        <div v-else class="mt-6 border-t border-gray-100 dark:border-navy-800 pt-4 flex-1">
+          <p class="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Pilih Server</p>
+          <div v-if="servers.length === 0" class="px-3 text-xs text-gray-500">Belum ada server.</div>
+          <RouterLink 
+            v-for="s in servers" 
+            :key="s.guild_id"
+            :to="`/app/server/${s.guild_id}`"
+            @click="isSidebarOpen = false"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors"
+          >
+            <div v-if="s.clan_badge_url" class="w-6 h-6 rounded-md overflow-hidden shrink-0">
+              <img :src="s.clan_badge_url" class="w-full h-full object-cover" />
+            </div>
+            <div v-else class="w-6 h-6 rounded-md bg-brand/20 flex items-center justify-center shrink-0 text-brand text-xs">#</div>
+            <span class="truncate">{{ s.clan_tag }}</span>
           </RouterLink>
         </div>
       </div>

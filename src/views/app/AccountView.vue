@@ -5,8 +5,8 @@
       <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Kelola informasi akun Discord dan sesi login kamu.</p>
     </div>
 
-    <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 shadow-sm">
-      <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100 dark:border-zinc-800">
+    <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100 dark:border-navy-800">
         <div class="w-16 h-16 bg-brand rounded-full flex items-center justify-center text-white text-2xl font-bold">
           {{ user?.username?.charAt(0).toUpperCase() || 'U' }}
         </div>
@@ -18,13 +18,13 @@
       </div>
 
       <div class="space-y-4">
-        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg">
+        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-navy-800 rounded-lg">
           <div>
-            <p class="text-sm font-bold text-gray-900 dark:text-white">Subscription Tier</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">Tier saat ini untuk akun ini.</p>
+            <p class="text-sm font-bold text-gray-900 dark:text-white">Total Server Dikelola</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Jumlah server Discord yang terhubung dengan Niki.</p>
           </div>
           <span class="px-3 py-1 text-xs font-bold uppercase rounded-md bg-brand-light text-brand dark:bg-purple-900/30 dark:text-purple-400">
-            Free Tier
+            {{ serverCount }} Server
           </span>
         </div>
 
@@ -37,6 +37,19 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useAuth } from '../../composables/useAuth'
+import { apiFetch } from '../../lib/api'
+
 const { user, logout } = useAuth()
+const serverCount = ref(0)
+
+onMounted(async () => {
+  try {
+    const data = await apiFetch('/auth/me')
+    serverCount.value = (data?.servers || []).length
+  } catch (e) {
+    console.error(e)
+  }
+})
 </script>
