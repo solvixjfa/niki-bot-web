@@ -65,7 +65,7 @@ const error = ref('')
 const data = ref({ offense: [], defense: [] })
 
 onMounted(async () => {
-  if (tier === 'free') { loading.value = false; return }
+  if (tier.value === 'free') { loading.value = false; return }
   try {
     const res = await apiFetch('/clan/racewar')
     if (res.error) error.value = res.error

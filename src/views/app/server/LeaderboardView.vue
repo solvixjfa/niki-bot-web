@@ -42,7 +42,7 @@ const loading = ref(true)
 const leaderboard = ref([])
 
 onMounted(async () => {
-  if (tier === 'free') { loading.value = false; return }
+  if (tier.value === 'free') { loading.value = false; return }
   try {
     leaderboard.value = await apiFetch('/clan/leaderboard')
   } catch (err) { console.error(err) } 
