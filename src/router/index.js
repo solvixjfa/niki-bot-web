@@ -30,6 +30,8 @@ import RewardsView from '../views/app/server/RewardsView.vue'
 import AiAuditView from '../views/app/server/AiAuditView.vue'
 import AdminLayout from '../views/admin/AdminLayout.vue'
 import AdminServersView from '../views/admin/AdminServersView.vue'
+import AdminOverviewView from '../views/admin/AdminOverviewView.vue'
+import AdminBroadcastView from '../views/admin/AdminBroadcastView.vue'
 import AdminRequestsView from '../views/admin/AdminRequestsView.vue'
 import AiWarRoomView from '../views/app/server/AiWarRoomView.vue'
 import CwlRosterView from '../views/app/server/CwlRosterView.vue'
@@ -107,8 +109,10 @@ const router = createRouter({
       path: '/admin',
       component: AdminLayout,
       children: [
-        { path: '', name: 'admin-dashboard', component: AdminServersView },
-        { path: 'requests', name: 'admin-requests', component: AdminRequestsView }
+        { path: '', name: 'admin-dashboard', component: AdminOverviewView },
+        { path: 'servers', name: 'admin-servers', component: AdminServersView },
+        { path: 'requests', name: 'admin-requests', component: AdminRequestsView },
+        { path: 'broadcast', name: 'admin-broadcast', component: AdminBroadcastView }
       ]
     }
   ],
