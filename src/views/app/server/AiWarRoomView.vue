@@ -50,8 +50,8 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
               </div>
               <div class="flex-1 text-right">
-                <p class="text-sm font-bold text-brand dark:text-purple-400">Base #{{ m.target.map_position }}</p>
-                <p class="text-[10px] font-mono text-gray-500">Baru {{ m.target.stars }} Star</p>
+                <p class="text-sm font-bold text-brand dark:text-purple-400">Base #{{ m.target.map_position }} {{ m.target.name }}</p>
+                <p class="text-[10px] font-mono text-gray-500">TH{{ m.target.th }} • Baru {{ m.target.stars }} Star</p>
               </div>
             </div>
           </div>
