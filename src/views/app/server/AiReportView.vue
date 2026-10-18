@@ -70,7 +70,16 @@ const report = ref({})
 const chartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
 
 const chartDonors = computed(() => {
-  const donors = report.value.raw_data?.top_donors || []
+  let raw = report.value.raw_data
+  if (typeof raw === 'string') {
+    try { raw = JSON.parse(raw) } catch(e) {}
+  }
+  const donors = raw?.top_donors || []
+  
+  if (donors.length === 0) {
+    return { labels: ['Data tidak tersedia'], datasets: [{ data: [1], backgroundColor: '#e5e7eb' }] }
+  }
+
   return {
     labels: donors.map(d => d.name),
     datasets: [{ label: 'Donasi', data: donors.map(d => d.score), backgroundColor: '#8b5cf6', borderRadius: 4 }]

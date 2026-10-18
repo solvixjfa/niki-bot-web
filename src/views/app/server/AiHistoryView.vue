@@ -21,19 +21,15 @@
               <th class="px-4 py-3">Tipe Laporan</th>
               <th class="px-4 py-3">Tanggal Dibuat</th>
               <th class="px-4 py-3">Ringkasan</th>
-              <th class="px-4 py-3 text-right">Aksi</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="h in history" :key="h.id" class="border-b border-gray-100 dark:border-navy-800 hover:bg-gray-50 dark:hover:bg-navy-800/50">
+            <tr v-for="h in history" :key="h.id" @click="goToDetail(h.id)" class="border-b border-gray-100 dark:border-navy-800 hover:bg-gray-50 dark:hover:bg-navy-800/50 cursor-pointer transition-colors">
               <td class="px-4 py-3">
                 <span class="text-[10px] font-bold uppercase bg-purple-100 text-purple-700 px-2 py-1 rounded">{{ h.type.replace('_', ' ') }}</span>
               </td>
               <td class="px-4 py-3 text-gray-600 dark:text-gray-300">{{ new Date(h.date).toLocaleString('id-ID') }}</td>
               <td class="px-4 py-3 text-gray-600 dark:text-gray-300 truncate max-w-xs">{{ h.snippet }}</td>
-              <td class="px-4 py-3 text-right">
-                <RouterLink :to="`/app/server/${$route.params.guildId}/ai-report/${h.id}`" class="text-xs font-bold text-brand hover:underline">Lihat Detail</RouterLink>
-              </td>
             </tr>
           </tbody>
         </table>
@@ -44,10 +40,17 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { apiFetch } from '../../../lib/api'
 
+const router = useRouter()
+const route = useRoute()
 const loading = ref(true)
 const history = ref([])
+
+const goToDetail = (id) => {
+  router.push(`/app/server/${route.params.guildId}/ai-report/${id}`)
+}
 
 onMounted(async () => {
   try {
