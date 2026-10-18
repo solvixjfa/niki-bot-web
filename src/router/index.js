@@ -130,3 +130,20 @@ router.beforeEach((to, _from, next) => {
 })
 
 export default router
+
+router.afterEach((to, from) => {
+  // Cuma track halaman /app/* dan /admin/*
+  if (to.path.startsWith('/app') || to.path.startsWith('/admin')) {
+    const token = localStorage.getItem('niki_token')
+    const guildId = to.params.guildId || localStorage.getItem('niki_active_guild')
+    
+    fetch(`${import.meta.env.VITE_API_URL || 'https://clashofclansbot-production.up.railway.app'}/admin/track`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ path: to.path, guild_id: guildId })
+    }).catch(() => {}) // Silent fail
+  }
+})
