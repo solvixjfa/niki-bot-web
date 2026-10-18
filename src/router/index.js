@@ -132,8 +132,8 @@ router.beforeEach((to, _from, next) => {
 export default router
 
 router.afterEach((to, from) => {
-  // Cuma track halaman /app/* dan /admin/*
   if (to.path.startsWith('/app') || to.path.startsWith('/admin')) {
+    // 1. Custom Analytics (ke Supabase)
     const token = localStorage.getItem('niki_token')
     const guildId = to.params.guildId || localStorage.getItem('niki_active_guild')
     
@@ -144,6 +144,11 @@ router.afterEach((to, from) => {
         ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       },
       body: JSON.stringify({ path: to.path, guild_id: guildId })
-    }).catch(() => {}) // Silent fail
+    }).catch(() => {})
+
+    // 2. Umami Analytics (manual track karena SPA)
+    if (window.umami) {
+      window.umami.track(to.path)
+    }
   }
 })
