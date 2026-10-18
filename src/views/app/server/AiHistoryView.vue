@@ -19,7 +19,8 @@
 
     <!-- KONTEN TAB HISTORY -->
     <div v-if="activeTab === 'history'" class="space-y-4">
-      <div v-if="loadingHistory" class="animate-pulse text-gray-500 py-12 text-center">Memuat arsip laporan...</div>
+      <PremiumGate v-if="isLocked" />
+      <div v-else-if="loadingHistory" class="animate-pulse text-gray-500 py-12 text-center">Memuat arsip laporan...</div>
       <div v-else-if="history.length === 0" class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-12 text-center shadow-sm">
         <p class="text-gray-500">Belum ada arsip laporan AI. Silakan buat laporan baru di menu AI Audit.</p>
       </div>
@@ -114,6 +115,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { apiFetch } from '../../../lib/api'
+import PremiumGate from '../../../components/PremiumGate.vue'
 import Toast from '../../../components/ui/Toast.vue'
 
 const router = useRouter()
@@ -124,6 +126,7 @@ const activeTab = ref('history')
 
 // State History
 const loadingHistory = ref(true)
+const isLocked = ref(false)
 const history = ref([])
 
 // State CWL
@@ -167,7 +170,11 @@ onMounted(async () => {
     const res = await apiFetch('/ai/history')
     history.value = res || []
   } catch (err) {
-    console.error(err)
+    if (err.message.includes('403') || err.message.includes('PRO')) {
+      isLocked.value = true
+    } else {
+      console.error(err)
+    }
   } finally {
     loadingHistory.value = false
   }

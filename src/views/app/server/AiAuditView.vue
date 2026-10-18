@@ -12,7 +12,8 @@
       </div>
     </div>
 
-    <div v-if="loading" class="animate-pulse text-gray-500 py-12 text-center">Menganalisis data klan...</div>
+    <PremiumGate v-if="isLocked" />
+    <div v-else-if="loading" class="animate-pulse text-gray-500 py-12 text-center">Menganalisis data klan...</div>
     <div v-else-if="error" class="bg-red-50 text-red-500 p-4 rounded-xl text-sm">{{ error }}</div>
 
     <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -65,6 +66,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { apiFetch } from '../../../lib/api'
+import PremiumGate from '../../../components/PremiumGate.vue'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js'
 import { Bar, Doughnut } from 'vue-chartjs'
 
@@ -73,6 +75,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
 const loading = ref(true)
 const isEnhancing = ref(false)
 const error = ref('')
+const isLocked = ref(false)
 const narrative = ref('')
 const raw_data = ref({})
 const credits = ref(0)
@@ -106,7 +109,11 @@ async function loadAudit() {
     credits.value = resAudit.credits
     history.value = resHistory || []
   } catch (err) {
-    error.value = err.message
+    if (err.message.includes('403') || err.message.includes('PRO')) {
+      isLocked.value = true
+    } else {
+      error.value = err.message
+    }
   } finally {
     loading.value = false
   }

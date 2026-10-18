@@ -5,7 +5,8 @@
       Kembali ke Arsip
     </button>
 
-    <div v-if="loading" class="animate-pulse text-gray-500 py-12 text-center">Memuat detail laporan...</div>
+    <PremiumGate v-if="isLocked" />
+    <div v-else-if="loading" class="animate-pulse text-gray-500 py-12 text-center">Memuat detail laporan...</div>
     <div v-else-if="error" class="bg-red-50 text-red-500 p-4 rounded-xl text-sm">{{ error }}</div>
 
     <div v-else class="space-y-6">
@@ -57,6 +58,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { apiFetch } from '../../../lib/api'
+import PremiumGate from '../../../components/PremiumGate.vue'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js'
 import { Bar, Doughnut } from 'vue-chartjs'
 
@@ -65,6 +67,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
 const route = useRoute()
 const loading = ref(true)
 const error = ref('')
+const isLocked = ref(false)
 const report = ref({})
 const auditData = ref({}) // State baru buat nampung data real-time
 
@@ -106,7 +109,11 @@ onMounted(async () => {
       auditData.value = resAudit.raw_data
     }
   } catch (err) {
-    error.value = err.message
+    if (err.message.includes('403') || err.message.includes('PRO')) {
+      isLocked.value = true
+    } else {
+      error.value = err.message
+    }
   } finally {
     loading.value = false
   }
