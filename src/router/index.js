@@ -28,6 +28,7 @@ import LeaderboardView from '../views/app/server/LeaderboardView.vue'
 import CompareView from '../views/app/server/CompareView.vue'
 import RewardsView from '../views/app/server/RewardsView.vue'
 import AiAuditView from '../views/app/server/AiAuditView.vue'
+import AiWarRoomView from '../views/app/server/AiWarRoomView.vue'
 import AiReportView from '../views/app/server/AiReportView.vue'
 import AiHistoryView from '../views/app/server/AiHistoryView.vue'
 
@@ -86,6 +87,7 @@ const router = createRouter({
             // CAPITAL
             { path: 'capital', name: 'server-capital', component: CapitalView },
             { path: 'ai-audit', name: 'server-ai-audit', component: AiAuditView },
+            { path: 'ai-war-room', name: 'server-ai-war-room', component: AiWarRoomView },
             { path: 'ai-report/:id', name: 'server-ai-report', component: AiReportView },
             { path: 'ai-history', name: 'server-ai-history', component: AiHistoryView },
           ]

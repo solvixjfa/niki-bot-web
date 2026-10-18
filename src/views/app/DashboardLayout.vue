@@ -145,6 +145,14 @@
               </div>
               <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">PRO</span>
             </RouterLink>
+
+            <RouterLink :to="`/app/server/${currentGuildId}/ai-war-room`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors mt-1" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
+              <div class="flex items-center gap-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
+                AI War Room
+              </div>
+              <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">PRO</span>
+            </RouterLink>
           </div>
         </template>
         <template v-else>
