@@ -132,8 +132,18 @@ router.beforeEach((to, _from, next) => {
 export default router
 
 router.afterEach((to, from) => {
+  // Cek apakah user ini admin (dari localStorage)
+  const adminId = '1398959824976478298'
+  let isAdmin = false
+  try {
+    const u = JSON.parse(localStorage.getItem('niki_user') || '{}')
+    isAdmin = String(u.id) === adminId
+  } catch(e) {}
+  
+  // Skip tracking kalau admin (biar statistik bersih)
+  if (isAdmin) return
+  
   if (to.path.startsWith('/app') || to.path.startsWith('/admin')) {
-    // 1. Custom Analytics (ke Supabase)
     const token = localStorage.getItem('niki_token')
     const guildId = to.params.guildId || localStorage.getItem('niki_active_guild')
     
@@ -146,7 +156,6 @@ router.afterEach((to, from) => {
       body: JSON.stringify({ path: to.path, guild_id: guildId })
     }).catch(() => {})
 
-    // 2. Umami Analytics (manual track karena SPA)
     if (window.umami) {
       window.umami.track(to.path)
     }
