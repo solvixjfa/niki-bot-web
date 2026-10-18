@@ -132,32 +132,30 @@ router.beforeEach((to, _from, next) => {
 export default router
 
 router.afterEach((to, from) => {
-  // Cek apakah user ini admin (dari localStorage)
-  const adminId = '1398959824976478298'
+  // 1. Decode JWT buat cek admin secara akurat
   let isAdmin = false
-  try {
-    const u = JSON.parse(localStorage.getItem('niki_user') || '{}')
-    isAdmin = String(u.id) === adminId
-  } catch(e) {}
-  
-  // Skip tracking kalau admin (biar statistik bersih)
+  const token = localStorage.getItem('niki_token')
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      const userId = String(payload.id || payload.user_id || payload.sub || '')
+      if (userId === '1398959824976478298') isAdmin = true
+    } catch(e) {}
+  }
+
+  // 2. Kalau admin, GAK USAH nembak API tracking
   if (isAdmin) return
-  
+
+  // 3. Track halaman kalau bukan admin
   if (to.path.startsWith('/app') || to.path.startsWith('/admin')) {
-    const token = localStorage.getItem('niki_token')
     const guildId = to.params.guildId || localStorage.getItem('niki_active_guild')
     
     fetch(`${import.meta.env.VITE_API_URL || 'https://clashofclansbot-production.up.railway.app'}/admin/track`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-      },
+      headers: { 'Content-Type': 'application/json', ...(token ? { 'Authorization': `Bearer ${token}` } : {}) },
       body: JSON.stringify({ path: to.path, guild_id: guildId })
     }).catch(() => {})
 
-    if (window.umami) {
-      window.umami.track(to.path)
-    }
+    if (window.umami) window.umami.track(to.path)
   }
 })
