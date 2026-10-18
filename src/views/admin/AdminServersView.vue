@@ -2,7 +2,7 @@
   <div class="space-y-6">
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Super Admin Panel</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Manage Servers</h2>
         <p class="text-sm text-gray-500 mt-1">Kelola semua server yang terhubung.</p>
       </div>
       <input v-model="searchQuery" type="text" placeholder="Cari Guild ID atau Clan Tag..." class="px-4 py-2 border rounded-lg dark:bg-navy-900 dark:border-navy-700 outline-none focus:border-brand text-sm w-64">
@@ -45,12 +45,10 @@
       </div>
     </div>
 
-    <!-- MODAL EDIT -->
     <Teleport to="body">
       <div v-if="isModalOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
         <div class="bg-white dark:bg-navy-900 rounded-xl p-6 w-full max-w-md shadow-2xl">
           <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Edit Server: {{ editingServer?.clan_tag }}</h3>
-          
           <div class="space-y-4">
             <div>
               <label class="block text-xs font-bold text-gray-500 mb-1">Tier</label>
@@ -69,7 +67,6 @@
               <input v-model="editForm.ai_credits" type="number" class="w-full p-2 border rounded-lg dark:bg-navy-800 dark:border-navy-700 outline-none text-sm">
             </div>
           </div>
-
           <div class="flex justify-end gap-2 mt-6">
             <button @click="isModalOpen = false" class="px-4 py-2 text-sm font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-navy-800 rounded-lg">Batal</button>
             <button @click="saveChanges" :disabled="saving" class="px-4 py-2 text-sm font-bold bg-brand text-white rounded-lg disabled:opacity-50">Simpan</button>
@@ -82,13 +79,12 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { apiFetch } from '../../../lib/api' // Sesuaikan path import lu
+import { apiFetch } from '../../lib/api'
 
 const loading = ref(true)
 const error = ref('')
 const servers = ref([])
 const searchQuery = ref('')
-
 const isModalOpen = ref(false)
 const editingServer = ref(null)
 const saving = ref(false)
@@ -102,11 +98,7 @@ const filteredServers = computed(() => {
 
 function openEditModal(server) {
   editingServer.value = server
-  editForm.value = { 
-    tier: server.tier, 
-    ai_credits: server.ai_credits, 
-    days_added: 30 
-  }
+  editForm.value = { tier: server.tier, ai_credits: server.ai_credits, days_added: 30 }
   isModalOpen.value = true
 }
 
@@ -118,7 +110,6 @@ async function saveChanges() {
       body: JSON.stringify(editForm.value)
     })
     isModalOpen.value = false
-    // Refresh data
     const res = await apiFetch('/admin/servers')
     servers.value = res
   } catch (err) {

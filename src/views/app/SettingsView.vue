@@ -74,10 +74,16 @@
           <!-- Tombol Contact Admin -->
           <div class="mt-6 pt-6 border-t border-gray-100 dark:border-navy-800">
             <p class="text-xs text-gray-500 mb-2">Mau upgrade ke Standard/Pro? Hubungi admin dan kirimkan ID di bawah ini.</p>
-            <button @click="copyContactInfo" class="w-full py-2.5 bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-gray-700 dark:hover:bg-gray-200 text-sm font-bold rounded-lg transition-colors flex justify-center items-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-              Copy Info & Hubungi Admin
-            </button>
+            <div class="flex flex-col gap-2">
+              <select v-model="requestedTier" class="w-full bg-gray-50 dark:bg-navy-950 border border-gray-200 dark:border-navy-800 rounded-lg px-4 py-2.5 text-sm outline-none focus:border-brand text-gray-900 dark:text-white">
+                <option value="standard">Upgrade ke Standard</option>
+                <option value="pro">Upgrade ke Pro</option>
+              </select>
+              <button @click="requestUpgrade" :disabled="requesting" class="w-full py-2.5 bg-brand hover:bg-brand-dark text-white text-sm font-bold rounded-lg transition-colors flex justify-center items-center gap-2 disabled:opacity-50">
+                <span v-if="requesting" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                {{ requesting ? 'Mengirim...' : 'Ajukan Upgrade' }}
+              </button>
+            </div>
           </div>
 
           <button @click="saveSettings" :disabled="saving" class="w-full py-2.5 bg-brand hover:bg-brand-dark text-white text-sm font-bold rounded-lg transition-colors flex justify-center items-center gap-2 disabled:opacity-50 mt-4">
@@ -104,11 +110,25 @@ const userServers = ref([])
 const loadingSettings = ref(false)
 const serverSettings = ref({})
 const saving = ref(false)
+const requesting = ref(false)
+const requestedTier = ref('standard')
 
 const getAvatarUrl = (id, hash) => {
   if (!hash) return null
   // Format URL Avatar Discord
   return `https://cdn.discordapp.com/avatars/${id}/${hash}.png?size=128`
+}
+
+async function requestUpgrade() {
+  requesting.value = true
+  try {
+    const res = await apiFetch(`/clan/settings/request-upgrade?tier=${requestedTier.value}`, { method: 'POST' })
+    alert(res.message || 'Request berhasil dikirim ke Admin!')
+  } catch (err) {
+    alert('Gagal kirim request: ' + err.message)
+  } finally {
+    requesting.value = false
+  }
 }
 
 function copyContactInfo() {
