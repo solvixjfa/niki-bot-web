@@ -103,7 +103,6 @@ const router = createRouter({
       ],
     },
     { path: '/:pathMatch(.*)*', redirect: '/' },
-    },
     {
       path: '/admin',
       component: AdminLayout,
