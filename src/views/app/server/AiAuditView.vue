@@ -13,12 +13,11 @@
     </div>
 
     <div v-if="loading" class="animate-pulse text-gray-500 py-12 text-center">Menganalisis data klan...</div>
-
     <div v-else-if="error" class="bg-red-50 text-red-500 p-4 rounded-xl text-sm">{{ error }}</div>
 
-    <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Laporan Utama -->
-      <div class="md:col-span-2 space-y-4">
+    <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- KOLOM KIRI: Laporan & Charts -->
+      <div class="lg:col-span-2 space-y-6">
         <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-6 shadow-sm">
           <div class="flex justify-between items-center mb-4 pb-4 border-b border-gray-100 dark:border-navy-800">
             <h3 class="font-bold text-gray-900 dark:text-white">Laporan Eksekutif</h3>
@@ -30,26 +29,32 @@
           </div>
           <pre class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap font-sans leading-relaxed">{{ narrative }}</pre>
         </div>
-      </div>
 
-      <!-- Widget Statistik -->
-      <div class="space-y-4">
-        <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-5 shadow-sm">
-          <h3 class="font-bold text-xs text-gray-500 uppercase mb-3">Top Donatur</h3>
-          <div class="space-y-2">
-            <div v-for="d in raw_data.top_donors" :key="d.name" class="flex justify-between text-sm">
-              <span class="text-gray-700 dark:text-gray-300">{{ d.name }}</span>
-              <span class="font-bold text-green-500">{{ d.score }}</span>
-            </div>
+        <div v-if="raw_data.total_members > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-4 shadow-sm">
+            <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Top 5 Donatur</h4>
+            <div class="h-48"><Bar :data="chartDonors" :options="chartOptions" /></div>
+          </div>
+          <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-4 shadow-sm">
+            <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Aktif vs Pasif</h4>
+            <div class="h-48 flex justify-center"><Doughnut :data="chartActive" :options="chartOptions" /></div>
           </div>
         </div>
-        
+      </div>
+
+      <!-- KOLOM KANAN: History -->
+      <div class="space-y-4">
         <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-5 shadow-sm">
-          <h3 class="font-bold text-xs text-gray-500 uppercase mb-3">Komposisi TH</h3>
-          <div class="flex flex-wrap gap-2">
-            <span v-for="th in raw_data.th_summary" :key="th.th" class="text-xs bg-gray-100 dark:bg-navy-800 px-2 py-1 rounded">
-              TH{{ th.th }}: {{ th.count }}
-            </span>
+          <h3 class="font-bold text-xs text-gray-500 uppercase mb-3">Riwayat AI Report</h3>
+          <div v-if="history.length === 0" class="text-sm text-gray-400">Belum ada history.</div>
+          <div v-else class="space-y-3">
+            <div v-for="h in history" :key="h.id" class="p-3 bg-gray-50 dark:bg-navy-800 rounded-lg border border-gray-100 dark:border-navy-700">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[10px] font-bold text-purple-600 uppercase">{{ h.type }}</span>
+                <span class="text-[10px] text-gray-400">{{ new Date(h.date).toLocaleDateString('id-ID') }}</span>
+              </div>
+              <p class="text-xs text-gray-600 dark:text-gray-300 line-clamp-2">{{ h.snippet }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -58,8 +63,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { apiFetch } from '../../../lib/api'
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js'
+import { Bar, Doughnut } from 'vue-chartjs'
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement)
 
 const loading = ref(true)
 const isEnhancing = ref(false)
@@ -67,14 +76,35 @@ const error = ref('')
 const narrative = ref('')
 const raw_data = ref({})
 const credits = ref(0)
+const history = ref([])
+
+const chartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+
+const chartDonors = computed(() => {
+  const donors = raw_data.value.top_donors || []
+  return {
+    labels: donors.map(d => d.name),
+    datasets: [{ label: 'Donasi', data: donors.map(d => d.score), backgroundColor: '#8b5cf6', borderRadius: 4 }]
+  }
+})
+
+const chartActive = computed(() => {
+  const active = raw_data.value.active_members || 0
+  const passive = raw_data.value.zero_donors_count || 0
+  return {
+    labels: ['Aktif', 'Pasif'],
+    datasets: [{ data: [active, passive], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }]
+  }
+})
 
 async function loadAudit() {
   try {
-    const res = await apiFetch('/ai/audit')
-    if (res.error) throw new Error(res.error)
-    narrative.value = res.narrative
-    raw_data.value = res.raw_data
-    credits.value = res.credits
+    const [resAudit, resHistory] = await Promise.all([ apiFetch('/ai/audit'), apiFetch('/ai/history') ])
+    if (resAudit.error) throw new Error(resAudit.error)
+    narrative.value = resAudit.narrative
+    raw_data.value = resAudit.raw_data
+    credits.value = resAudit.credits
+    history.value = resHistory || []
   } catch (err) {
     error.value = err.message
   } finally {
@@ -88,6 +118,8 @@ async function enhanceAi() {
     const res = await apiFetch('/ai/audit/enhance', { method: 'POST' })
     narrative.value = res.narrative
     credits.value = res.credits
+    const resHistory = await apiFetch('/ai/history')
+    history.value = resHistory || []
   } catch (err) {
     alert('Gagal enhance: ' + err.message)
   } finally {
