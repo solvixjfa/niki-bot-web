@@ -58,14 +58,7 @@
           
           <!-- OVERVIEW -->
           
-          <!-- AI PRO FEATURES -->
-          <div v-if="currentGuildId" class="mt-4 border-t border-gray-100 dark:border-navy-800 pt-4">
-            <p class="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">AI Pro Features</p>
-            <RouterLink :to="`/app/server/${currentGuildId}/ai-audit`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
-              <div class="flex items-center gap-3">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                AI Audit
-              </div>
+          
               <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">PRO</span>
             </RouterLink>
           </div>
@@ -139,6 +132,19 @@
               <RouterLink :to="`/app/server/${currentGuildId}/capital`" @click="isSidebarOpen = false" class="block px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:text-brand dark:hover:text-purple-400">Capital Info</RouterLink>
             </div>
           </div>
+
+          <!-- AI PRO FEATURES -->
+          <div v-if="currentGuildId" class="mt-4 border-t border-gray-100 dark:border-navy-800 pt-4">
+            <p class="px-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">AI Pro Features</p>
+            <RouterLink :to="`/app/server/${currentGuildId}/ai-audit`" @click="isSidebarOpen = false" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-navy-800 transition-colors" active-class="bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400">
+              <div class="flex items-center gap-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                AI Audit
+              </div>
+              <span class="text-[9px] bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 px-1.5 py-0.5 rounded">PRO</span>
+            </RouterLink>
+          </div>
+
         </template>
         <template v-else>
           <div class="px-3 py-4 text-xs text-center text-gray-500">Pilih server terlebih dahulu.</div>
