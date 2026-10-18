@@ -13,22 +13,22 @@
     <div v-else class="space-y-6">
       <!-- TOP CARDS (Ringkasan Cepat) -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-5 shadow-sm">
+        <RouterLink :to="`/app/server/${$route.params.guildId}/members`" class="block bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-5 shadow-sm hover:border-brand dark:hover:border-purple-500 transition-colors">
           <p class="text-xs font-bold text-gray-500 uppercase mb-2">Total Member</p>
           <p class="text-3xl font-black text-gray-900 dark:text-white">{{ stats.total_members || 41 }} <span class="text-sm font-medium text-gray-500">Orang</span></p>
-        </div>
-        <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-5 shadow-sm">
+        </RouterLink>
+        <RouterLink :to="`/app/server/${$route.params.guildId}/members`" class="block bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-5 shadow-sm hover:border-brand dark:hover:border-purple-500 transition-colors">
           <p class="text-xs font-bold text-gray-500 uppercase mb-2">Member Pasif</p>
           <p class="text-3xl font-black text-red-500">{{ stats.zero_donors || 10 }} <span class="text-sm font-medium text-gray-500">Orang</span></p>
-        </div>
-        <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-5 shadow-sm">
+        </RouterLink>
+        <RouterLink :to="`/app/server/${$route.params.guildId}/war/recap`" class="block bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-5 shadow-sm hover:border-brand dark:hover:border-purple-500 transition-colors">
           <p class="text-xs font-bold text-gray-500 uppercase mb-2">Win Rate War</p>
           <p class="text-3xl font-black text-green-500">{{ winRate }}%</p>
-        </div>
-        <div class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-5 shadow-sm">
+        </RouterLink>
+        <RouterLink :to="`/app/server/${$route.params.guildId}/capital`" class="block bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-5 shadow-sm hover:border-brand dark:hover:border-purple-500 transition-colors">
           <p class="text-xs font-bold text-gray-500 uppercase mb-2">Loot Raid Terakhir</p>
           <p class="text-3xl font-black text-yellow-500">{{ capitalStats.total_loot || '40.844' }}</p>
-        </div>
+        </RouterLink>
       </div>
 
       <!-- CHARTS SECTION -->
