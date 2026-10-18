@@ -1,46 +1,73 @@
 <template>
-  <div class="max-w-4xl mx-auto space-y-6">
+  <div class="space-y-6 max-w-3xl mx-auto">
     <div>
-      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Settings</h1>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Kelola akun dan preferensi aplikasi kamu.</p>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Settings</h2>
+      <p class="text-sm text-gray-500 mt-1">Kelola akun dan preferensi aplikasi kamu.</p>
     </div>
 
-    <div class="flex flex-col md:flex-row gap-6">
-      <!-- Sub-menu Settings -->
-      <div class="w-full md:w-48 shrink-0">
-        <nav class="flex flex-row md:flex-col gap-1 overflow-x-auto hide-scrollbar">
-          <button class="px-4 py-2.5 text-sm font-bold text-left rounded-lg bg-brand-light text-brand dark:bg-navy-800 dark:text-purple-400 whitespace-nowrap">Account</button>
-          <button class="px-4 py-2.5 text-sm font-medium text-left rounded-lg text-gray-500 hover:bg-gray-50 dark:hover:bg-navy-800 whitespace-nowrap">Billing (Soon)</button>
-          <button class="px-4 py-2.5 text-sm font-medium text-left rounded-lg text-gray-500 hover:bg-gray-50 dark:hover:bg-navy-800 whitespace-nowrap">Preferences</button>
-        </nav>
+    <!-- Tab Navigation -->
+    <div class="flex border-b border-gray-200 dark:border-navy-800">
+      <button @click="activeTab = 'account'" :class="activeTab === 'account' ? 'border-brand text-brand dark:text-purple-400' : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'" class="px-4 py-2 text-sm font-bold border-b-2 transition-colors">Account</button>
+      <button @click="activeTab = 'preferences'" :class="activeTab === 'preferences' ? 'border-brand text-brand dark:text-purple-400' : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'" class="px-4 py-2 text-sm font-bold border-b-2 transition-colors">Server Preferences</button>
+      <button class="px-4 py-2 text-sm font-bold border-b-2 border-transparent text-gray-400 cursor-not-allowed">Billing (Soon)</button>
+    </div>
+
+    <!-- TAB ACCOUNT -->
+    <div v-if="activeTab === 'account'" class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-6 shadow-sm">
+      <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100 dark:border-navy-800">
+        <!-- AVATAR DISCORD -->
+        <img v-if="user.avatar" :src="getAvatarUrl(user.id, user.avatar)" alt="Avatar" class="w-20 h-20 rounded-full shadow-md object-cover bg-purple-500">
+        <div v-else class="w-20 h-20 rounded-full bg-brand flex items-center justify-center text-white text-2xl font-black shadow-md">
+          {{ user.username?.charAt(0).toUpperCase() || 'U' }}
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ user.username || 'User' }}</h3>
+          <p class="text-sm text-gray-500">Discord ID: {{ user.id || '-' }}</p>
+        </div>
       </div>
 
-      <!-- Konten Account -->
-      <div class="flex-1 bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-6 shadow-sm">
-        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100 dark:border-navy-800">
-          <div class="w-16 h-16 bg-brand rounded-full flex items-center justify-center text-white text-2xl font-bold">
-            {{ user?.username?.charAt(0).toUpperCase() || 'U' }}
-          </div>
+      <div class="bg-gray-50 dark:bg-navy-950 rounded-lg p-4 mb-6 border border-gray-100 dark:border-navy-800 flex justify-between items-center">
+        <div>
+          <p class="text-sm font-bold text-gray-900 dark:text-white">Total Server Dikelola</p>
+          <p class="text-xs text-gray-500">Jumlah server Discord yang terhubung dengan Niki.</p>
+        </div>
+        <span class="text-xl font-black text-brand dark:text-purple-400">{{ userServers.length }}</span>
+      </div>
+
+      <button @click="signOut" class="w-full py-2.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm font-bold rounded-lg hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
+        Sign Out dari Niki
+      </button>
+    </div>
+
+    <!-- TAB PREFERENCES (SERVER SETTINGS) -->
+    <div v-if="activeTab === 'preferences'" class="bg-white dark:bg-navy-900 border border-gray-200 dark:border-navy-800 rounded-xl p-6 shadow-sm">
+      <div v-if="loadingSettings" class="animate-pulse text-gray-500 text-center">Memuat pengaturan server...</div>
+      
+      <div v-else>
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100 dark:border-navy-800">
           <div>
-            <h2 class="text-lg font-bold text-gray-900 dark:text-white">{{ user?.global_name || user?.username }}</h2>
-            <p class="text-sm text-gray-500 dark:text-gray-400">@{{ user?.username }}</p>
-            <p class="text-xs text-gray-400 mt-1">Discord ID: {{ user?.id }}</p>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Konfigurasi Server</h3>
+            <p class="text-xs text-gray-500">Clan Tag: {{ serverSettings.clan_tag || '-' }}</p>
           </div>
+          <span class="text-[10px] font-bold uppercase bg-purple-100 text-purple-700 px-2 py-1 rounded">{{ serverSettings.tier || 'FREE' }} TIER</span>
         </div>
 
         <div class="space-y-4">
-          <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-navy-800 rounded-xl">
-            <div>
-              <p class="text-sm font-bold text-gray-900 dark:text-white">Total Server Dikelola</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">Jumlah server Discord yang terhubung dengan Niki.</p>
-            </div>
-            <span class="px-3 py-1 text-sm font-black uppercase rounded-md bg-brand-light text-brand dark:bg-purple-900/30 dark:text-purple-400">
-              {{ serverCount }}
-            </span>
+          <div>
+            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Discord Alert Channel ID</label>
+            <p class="text-[11px] text-gray-500 mb-2">ID Channel tempat bot akan mengirim notifikasi War/CWL otomatis.</p>
+            <input v-model="serverSettings.alert_channel_id" type="text" placeholder="Contoh: 1398959825445978145" class="w-full bg-gray-50 dark:bg-navy-950 border border-gray-200 dark:border-navy-800 rounded-lg px-4 py-2.5 text-sm outline-none focus:border-brand text-gray-900 dark:text-white">
           </div>
 
-          <button @click="logout" class="w-full py-2.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm font-bold rounded-xl hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
-            Sign Out dari Niki
+          <div class="bg-gray-50 dark:bg-navy-950 p-4 rounded-lg border border-gray-100 dark:border-navy-800">
+            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Sisa AI Credits</p>
+            <p class="text-2xl font-black text-gray-900 dark:text-white">{{ serverSettings.ai_credits || 0 }}</p>
+          </div>
+
+          <button @click="saveSettings" :disabled="saving" class="w-full py-2.5 bg-brand hover:bg-brand-dark text-white text-sm font-bold rounded-lg transition-colors flex justify-center items-center gap-2 disabled:opacity-50">
+            <span v-if="saving" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+            {{ saving ? 'Menyimpan...' : 'Simpan Pengaturan' }}
           </button>
         </div>
       </div>
@@ -50,18 +77,70 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useAuth } from '../../composables/useAuth'
+import { useRouter } from 'vue-router'
 import { apiFetch } from '../../lib/api'
 
-const { user, logout } = useAuth()
-const serverCount = ref(0)
+const router = useRouter()
+const activeTab = ref('account')
+const user = ref({})
+const userServers = ref([])
 
-onMounted(async () => {
+// State Server Settings
+const loadingSettings = ref(false)
+const serverSettings = ref({})
+const saving = ref(false)
+
+const getAvatarUrl = (id, hash) => {
+  if (!hash) return null
+  // Format URL Avatar Discord
+  return `https://cdn.discordapp.com/avatars/${id}/${hash}.png?size=128`
+}
+
+function signOut() {
+  localStorage.clear()
+  router.push('/')
+}
+
+async function loadSettings() {
+  loadingSettings.value = true
   try {
-    const data = await apiFetch('/auth/me')
-    serverCount.value = (data?.servers || []).length
-  } catch (e) {
-    console.error(e)
+    const res = await apiFetch('/clan/settings')
+    if (res.error) throw new Error(res.error)
+    serverSettings.value = res
+  } catch (err) {
+    console.error('Gagal load settings:', err)
+  } finally {
+    loadingSettings.value = false
   }
+}
+
+async function saveSettings() {
+  saving.value = true
+  try {
+    const res = await apiFetch('/clan/settings', {
+      method: 'PUT',
+      body: JSON.stringify({ alert_channel_id: serverSettings.value.alert_channel_id })
+    })
+    if (res.error) throw new Error(res.error)
+    alert('Pengaturan berhasil disimpan!')
+  } catch (err) {
+    alert('Gagal menyimpan: ' + err.message)
+  } finally {
+    saving.value = false
+  }
+}
+
+onMounted(() => {
+  // Tarik data user dari localStorage
+  try {
+    const u = localStorage.getItem('niki_user')
+    if (u) user.value = JSON.parse(u)
+    
+    const s = localStorage.getItem('niki_servers_cache')
+    if (s) userServers.value = JSON.parse(s)
+  } catch(e) {}
+
+  // Load settings
+  loadSettings()
 })
 </script>
