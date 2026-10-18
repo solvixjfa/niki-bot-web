@@ -17,7 +17,8 @@
       </div>
     </div>
 
-    <div v-if="loading" class="animate-pulse text-gray-500 py-12 text-center">Menghitung roster terbaik...</div>
+    <PremiumGate v-if="isLocked" />
+    <div v-else-if="loading" class="animate-pulse text-gray-500 py-12 text-center">Menghitung roster terbaik...</div>
     <div v-else-if="error" class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4 rounded-xl text-sm border border-red-200 dark:border-red-900/50">{{ error }}</div>
 
     <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -73,9 +74,11 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { apiFetch } from '../../../lib/api'
+import PremiumGate from '../../../components/PremiumGate.vue'
 
 const loading = ref(true)
 const error = ref('')
+const isLocked = ref(false)
 const allMembers = ref([])
 const teamSize = ref(15)
 const excludedTags = ref([]) // Array buat nyimpen tag yang di-exclude
@@ -101,7 +104,11 @@ async function loadRoster() {
     if (res.error) throw new Error(res.error)
     allMembers.value = res || []
   } catch (err) {
-    error.value = err.message
+    if (err.message.includes('403') || err.message.includes('PRO')) {
+      isLocked.value = true
+    } else {
+      error.value = err.message
+    }
   } finally {
     loading.value = false
   }

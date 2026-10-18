@@ -10,7 +10,8 @@
       <div class="text-xs font-mono font-bold text-brand dark:text-purple-400 bg-brand-light dark:bg-purple-900/20 px-3 py-1.5 rounded-lg border border-brand/20 dark:border-purple-800/50">CREDITS: {{ credits }}</div>
     </div>
 
-    <div v-if="loading" class="animate-pulse text-gray-500 py-12 text-center">Menarik data War...</div>
+    <PremiumGate v-if="isLocked" />
+    <div v-else-if="loading" class="animate-pulse text-gray-500 py-12 text-center">Menarik data War...</div>
     <div v-else-if="error" class="bg-gray-50 dark:bg-navy-900 border border-gray-200 dark:border-navy-800 p-12 text-center rounded-xl text-gray-500">{{ error }}</div>
 
     <div v-else class="space-y-6">
@@ -70,10 +71,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { apiFetch } from '../../../lib/api'
+import PremiumGate from '../../../components/PremiumGate.vue'
 
 const loading = ref(true)
 const isEnhancing = ref(false)
 const error = ref('')
+const isLocked = ref(false)
 const data = ref({ matchups: [] })
 const narrative = ref('')
 const credits = ref(0)
@@ -90,7 +93,11 @@ async function loadWarRoom() {
     data.value = res
     credits.value = res.credits
   } catch (err) {
-    error.value = err.message
+    if (err.message.includes('403') || err.message.includes('PRO')) {
+      isLocked.value = true
+    } else {
+      error.value = err.message
+    }
   } finally {
     loading.value = false
   }
