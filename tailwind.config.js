@@ -7,10 +7,10 @@ export default {
       colors: {
         brand: { DEFAULT: '#7C3AED', dark: '#6D28D9', light: '#F3E8FF' },
         navy: {
-          950: '#0a0f1c', // Background Utama
-          900: '#111827', // Card Background
-          800: '#1f2937', // Border / Hover
-          700: '#374151'
+          950: '#000000', // Background Utama (Hitam Pekat)
+          900: '#0A0A0A', // Card Background (Hitam Sedikit Terang)
+          800: '#262626', // Border / Garis Tipis (Abu Gelap)
+          700: '#404040'  // Hover State
         }
       }
     },
