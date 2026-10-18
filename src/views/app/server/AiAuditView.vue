@@ -48,13 +48,13 @@
           <h3 class="font-bold text-xs text-gray-500 uppercase mb-3">Riwayat AI Report</h3>
           <div v-if="history.length === 0" class="text-sm text-gray-400">Belum ada history.</div>
           <div v-else class="space-y-3">
-            <div v-for="h in history" :key="h.id" class="p-3 bg-gray-50 dark:bg-navy-800 rounded-lg border border-gray-100 dark:border-navy-700">
+            <RouterLink v-for="h in history" :key="h.id" :to="`/app/server/${$route.params.guildId}/ai-report/${h.id}`" class="block p-3 bg-gray-50 dark:bg-navy-800 hover:bg-gray-100 dark:hover:bg-navy-700 rounded-lg border border-gray-100 dark:border-navy-700 transition-colors cursor-pointer">
               <div class="flex justify-between items-center mb-1">
                 <span class="text-[10px] font-bold text-purple-600 uppercase">{{ h.type }}</span>
                 <span class="text-[10px] text-gray-400">{{ new Date(h.date).toLocaleDateString('id-ID') }}</span>
               </div>
               <p class="text-xs text-gray-600 dark:text-gray-300 line-clamp-2">{{ h.snippet }}</p>
-            </div>
+            </RouterLink>
           </div>
         </div>
       </div>
