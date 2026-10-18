@@ -82,7 +82,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { apiFetch } from '../../../../lib/api' // Sesuaikan path import lu
+import { apiFetch } from '../../../lib/api' // Sesuaikan path import lu
 
 const loading = ref(true)
 const error = ref('')
