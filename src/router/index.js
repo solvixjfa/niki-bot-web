@@ -28,6 +28,7 @@ import LeaderboardView from '../views/app/server/LeaderboardView.vue'
 import CompareView from '../views/app/server/CompareView.vue'
 import RewardsView from '../views/app/server/RewardsView.vue'
 import AiAuditView from '../views/app/server/AiAuditView.vue'
+import AdminDashboardView from '../views/app/admin/AdminDashboardView.vue'
 import AiWarRoomView from '../views/app/server/AiWarRoomView.vue'
 import CwlRosterView from '../views/app/server/CwlRosterView.vue'
 import AiWarReportView from '../views/app/server/AiWarReportView.vue'
@@ -89,6 +90,7 @@ const router = createRouter({
             // CAPITAL
             { path: 'capital', name: 'server-capital', component: CapitalView },
             { path: 'ai-audit', name: 'server-ai-audit', component: AiAuditView },
+            { path: '/app/admin', name: 'admin-dashboard', component: AdminDashboardView },
             { path: 'ai-war-room', name: 'server-ai-war-room', component: AiWarRoomView },
             { path: 'cwl-roster', name: 'server-cwl-roster', component: CwlRosterView },
             { path: 'ai-war-report', name: 'server-ai-war-report', component: AiWarReportView },
