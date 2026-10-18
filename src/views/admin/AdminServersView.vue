@@ -80,6 +80,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { apiFetch } from '../../lib/api'
+import { showToast } from '../../lib/toast'
 
 const loading = ref(true)
 const error = ref('')
@@ -113,7 +114,7 @@ async function saveChanges() {
     const res = await apiFetch('/admin/servers')
     servers.value = res
   } catch (err) {
-    alert('Gagal: ' + err.message)
+    showToast('Gagal: ' + err.message, 'error')
   } finally {
     saving.value = false
   }

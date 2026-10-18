@@ -92,7 +92,7 @@ const router = createRouter({
             // CAPITAL
             { path: 'capital', name: 'server-capital', component: CapitalView },
             { path: 'ai-audit', name: 'server-ai-audit', component: AiAuditView },
-            { path: '/admin', component: AdminLayout, children: [{ path: '', name: 'admin-dashboard', component: AdminServersView }, { path: 'requests', name: 'admin-requests', component: AdminRequestsView }] },
+            
             { path: 'ai-war-room', name: 'server-ai-war-room', component: AiWarRoomView },
             { path: 'cwl-roster', name: 'server-cwl-roster', component: CwlRosterView },
             { path: 'ai-war-report', name: 'server-ai-war-report', component: AiWarReportView },
@@ -103,6 +103,15 @@ const router = createRouter({
       ],
     },
     { path: '/:pathMatch(.*)*', redirect: '/' },
+    },
+    {
+      path: '/admin',
+      component: AdminLayout,
+      children: [
+        { path: '', name: 'admin-dashboard', component: AdminServersView },
+        { path: 'requests', name: 'admin-requests', component: AdminRequestsView }
+      ]
+    }
   ],
 })
 
