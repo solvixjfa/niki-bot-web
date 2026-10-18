@@ -27,6 +27,7 @@ import InactiveView from '../views/app/server/InactiveView.vue'
 import LeaderboardView from '../views/app/server/LeaderboardView.vue'
 import CompareView from '../views/app/server/CompareView.vue'
 import RewardsView from '../views/app/server/RewardsView.vue'
+import AiAuditView from '../views/app/server/AiAuditView.vue'
 
 // Capital
 import CapitalView from '../views/app/server/CapitalView.vue'
@@ -82,6 +83,7 @@ const router = createRouter({
 
             // CAPITAL
             { path: 'capital', name: 'server-capital', component: CapitalView },
+            { path: 'ai-audit', name: 'server-ai-audit', component: AiAuditView },
           ]
         }
       ],
