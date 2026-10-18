@@ -109,11 +109,7 @@ onMounted(async () => {
       auditData.value = resAudit.raw_data
     }
   } catch (err) {
-    if (err.message.includes('403') || err.message.includes('PRO')) {
-      isLocked.value = true
-    } else {
-      error.value = err.message
-    }
+    isLocked.value = true
   } finally {
     loading.value = false
   }

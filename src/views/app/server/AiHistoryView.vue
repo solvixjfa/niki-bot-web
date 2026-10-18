@@ -170,11 +170,7 @@ onMounted(async () => {
     const res = await apiFetch('/ai/history')
     history.value = res || []
   } catch (err) {
-    if (err.message.includes('403') || err.message.includes('PRO')) {
-      isLocked.value = true
-    } else {
-      console.error(err)
-    }
+    isLocked.value = true
   } finally {
     loadingHistory.value = false
   }

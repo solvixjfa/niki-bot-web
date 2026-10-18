@@ -109,11 +109,7 @@ async function loadAudit() {
     credits.value = resAudit.credits
     history.value = resHistory || []
   } catch (err) {
-    if (err.message.includes('403') || err.message.includes('PRO')) {
-      isLocked.value = true
-    } else {
-      error.value = err.message
-    }
+    isLocked.value = true // Kalau error apapun dari backend, tampilkan gembok
   } finally {
     loading.value = false
   }
