@@ -46,9 +46,15 @@
       
       <div v-else>
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100 dark:border-navy-800">
-          <div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Konfigurasi Server</h3>
-            <p class="text-xs text-gray-500">Clan Tag: {{ serverSettings.clan_tag || '-' }}</p>
+          <div class="flex items-center gap-3">
+            <!-- Tampilin Logo Klan -->
+            <img v-if="serverSettings.clan_badge_url" :src="serverSettings.clan_badge_url" alt="Clan Badge" class="w-12 h-12 object-contain">
+            <div v-else class="w-12 h-12 bg-gray-200 dark:bg-navy-800 rounded-lg flex items-center justify-center text-gray-400 text-xs">No Img</div>
+            
+            <div>
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white">Konfigurasi Server</h3>
+              <p class="text-xs text-gray-500">Clan Tag: {{ serverSettings.clan_tag || '-' }}</p>
+            </div>
           </div>
           <span class="text-[10px] font-bold uppercase bg-purple-100 text-purple-700 px-2 py-1 rounded">{{ serverSettings.tier || 'FREE' }} TIER</span>
         </div>
