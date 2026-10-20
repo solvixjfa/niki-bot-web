@@ -1,5 +1,5 @@
 <template>
-  <section class="py-24 bg-white max-w-3xl mx-auto px-6">
+  <section id="faq" class="py-24 bg-white max-w-3xl mx-auto px-6">
     <div class="text-center mb-12">
       <h2 class="text-3xl font-bold mb-4 text-gray-900">Sering Ditanyain</h2>
       <p class="text-gray-600">Jawaban singkat buat keraguan lu.</p>

@@ -3,10 +3,7 @@
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-purple-200/50 blur-[100px] rounded-full pointer-events-none"></div>
 
     <div class="max-w-6xl mx-auto px-6 relative z-10 text-center">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-100 text-xs font-bold text-brand mb-8">
-        <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span>
-        Versi 2.0 Telah Rilis
-      </div>
+      
       
       <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight mb-6 leading-[1.1] text-gray-900">
         Bukan Sekadar Bot.<br/>
