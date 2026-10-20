@@ -27,7 +27,7 @@
       <!-- SCREENSHOT DUMMY DASHBOARD -->
       <div class="mt-16 relative mx-auto max-w-4xl rounded-2xl border border-gray-200 bg-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] overflow-hidden group">
         <div class="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent z-10 pointer-events-none"></div>
-        <img src="https://placehold.co/1200x675/f9fafb/9ca3af?text=Dashboard+Preview+(Ganti+Gambar+Ini)" alt="Dashboard Preview" class="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out" />
+        <img src="/hero-dashboard.png" alt="Dashboard Preview" loading="lazy" decoding="async" class="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out" />
       </div>
     </div>
   </section>
