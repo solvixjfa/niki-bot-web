@@ -131,7 +131,27 @@ router.beforeEach((to, _from, next) => {
 
 export default router
 
+
+function setDynamicManifest(path) {
+  let manifestUrl = '/manifest-app.json'; // Default
+  if (path.startsWith('/admin')) {
+    manifestUrl = '/manifest-admin.json';
+  }
+  
+  let link = document.querySelector('link[rel="manifest"]');
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'manifest';
+    document.head.appendChild(link);
+  }
+  link.href = manifestUrl;
+}
+
+// Panggil pas pertama kali load
+setDynamicManifest(window.location.pathname);
+
 router.afterEach((to, from) => {
+  setDynamicManifest(to.path);
   // 1. Decode JWT buat cek admin secara akurat
   let isAdmin = false
   const token = localStorage.getItem('niki_token')

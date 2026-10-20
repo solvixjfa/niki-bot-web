@@ -1,0 +1,12 @@
+{
+  "name": "Niki Web - Clan Dashboard",
+  "short_name": "Niki Web",
+  "start_url": "/app",
+  "scope": "/app",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7C3AED",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
